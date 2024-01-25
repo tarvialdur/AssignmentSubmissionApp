@@ -34,5 +34,6 @@ public class SecurityConfig<O> extends SecurityConfigurerAdapter<O, SecurityBuil
 	}
 	
 	
+
 }
  
