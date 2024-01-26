@@ -33,8 +33,9 @@ public class JwtFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(jakarta.servlet.http.HttpServletRequest request,
 			jakarta.servlet.http.HttpServletResponse response, jakarta.servlet.FilterChain chain)
 			throws jakarta.servlet.ServletException, IOException {
+
 		final String header = request.getHeader(HttpHeaders.AUTHORIZATION);
-		if (!StringUtils.hasText(header) || StringUtils.hasText(header) && !header.startsWith("Bearer ")) {
+		if (!StringUtils.hasText(header) || (StringUtils.hasText(header) && !header.startsWith("Bearer "))) {
 			chain.doFilter(request, response);
 			return;
 		}
