@@ -1,4 +1,4 @@
-package com.tarvialdur.AssignmentSubmissionApp.service; 
+package com.tarvialdur.AssignmentSubmissionApp.service;
 
 import java.util.Optional;
 
@@ -10,23 +10,19 @@ import org.springframework.stereotype.Service;
 
 import com.tarvialdur.AssignmentSubmissionApp.domain.User;
 import com.tarvialdur.AssignmentSubmissionApp.repository.UserRepository;
-import com.tarvialdur.AssignmentSubmissionApp.util.CustomPasswordEncoder;
 
 @Service
-public class UserDetailServiceImpl implements UserDetailsService{
+public class UserDetailServiceImpl implements UserDetailsService {
 
-	
 	@Autowired
 	private UserRepository userRepo;
-	
-	
+
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		
+
 		Optional<User> userOpt = userRepo.findByUsername(username);
-		
+
 		return userOpt.orElseThrow(() -> new UsernameNotFoundException("Invalid credentials"));
-	
-	
+
 	}
 }
