@@ -1,39 +1,32 @@
-import { useEffect, useState } from 'react';
-import './App.css';
+import "./App.css";
 
 function App() {
-  console.log("Hello");
+  console.log("Hello!");
 
-  const [jwt, setJwt] = useState("");
+  const reqBody = {
+    "username": "tarvi",
+    "password": "asdfasdf"
+  }
 
-  useEffect(() => {
-    const reqBody = {
-      "username": "tarvi",
-      "password": "asdfasdf"
-  };
-
-  //fetch returns a promise (a response)
-  fetch('/api/auth/login', {
+  fetch("/api/auth/login", {
     headers: {
-      "Content-type": "application/json"
+      "Content-Type": "application/json",
     },
     method: "post",
     body: JSON.stringify(reqBody),
-  }) 
+  })
   .then((response) => Promise.all([response.json(), response.headers]))
   .then(([body, headers]) => {
-    setJwt(headers.get("authorization"));
-    
-  });
-  }, []);
-  
+    const authValue = headers.get("authorization");
+    console.log(authValue);
+});
 
-  
 
-    return <div className="App">
-    <h1>Hello world</h1>
-    <div>JWT Value is {jwt}</div>
-    </div>;
-    
+  return (
+    <div className="App">
+      <h1>Hello world</h1>
+    </div>
+  );
 }
+
 export default App;
