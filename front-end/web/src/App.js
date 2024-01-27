@@ -1,25 +1,39 @@
-import logo from './logo.svg';
+import { useEffect, useState } from 'react';
 import './App.css';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+  console.log("Hello");
 
+  const [jwt, setJwt] = useState("");
+
+  useEffect(() => {
+    const reqBody = {
+      "username": "tarvi",
+      "password": "asdfasdf"
+  };
+
+  //fetch returns a promise (a response)
+  fetch('/api/auth/login', {
+    headers: {
+      "Content-type": "application/json"
+    },
+    method: "post",
+    body: JSON.stringify(reqBody),
+  }) 
+  .then((response) => Promise.all([response.json(), response.headers]))
+  .then(([body, headers]) => {
+    setJwt(headers.get("authorization"));
+    
+  });
+  }, []);
+  
+
+  
+
+    return <div className="App">
+    <h1>Hello world</h1>
+    <div>JWT Value is {jwt}</div>
+    </div>;
+    
+}
 export default App;

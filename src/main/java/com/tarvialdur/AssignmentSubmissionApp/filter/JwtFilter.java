@@ -16,6 +16,11 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.tarvialdur.AssignmentSubmissionApp.repository.UserRepository;
 import com.tarvialdur.AssignmentSubmissionApp.util.JwtUtil;
 
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 @Component
 public class JwtFilter extends OncePerRequestFilter {
 
@@ -30,9 +35,9 @@ public class JwtFilter extends OncePerRequestFilter {
 	// if no, kick it to next one in security chain
 
 	@Override
-	protected void doFilterInternal(jakarta.servlet.http.HttpServletRequest request,
-			jakarta.servlet.http.HttpServletResponse response, jakarta.servlet.FilterChain chain)
-			throws jakarta.servlet.ServletException, IOException {
+	protected void doFilterInternal(HttpServletRequest request,
+									HttpServletResponse response, FilterChain chain)
+			throws ServletException, IOException {
 
 		final String header = request.getHeader(HttpHeaders.AUTHORIZATION);
 		if (!StringUtils.hasText(header) || (StringUtils.hasText(header) && !header.startsWith("Bearer "))) {

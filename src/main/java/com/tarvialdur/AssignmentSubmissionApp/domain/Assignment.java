@@ -1,10 +1,8 @@
 package com.tarvialdur.AssignmentSubmissionApp.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+
+import javax.persistence.*;
+
 
 @Entity // will create table assignment (based on class name)
 public class Assignment {

@@ -24,6 +24,7 @@ public class AuthController {
 	@Autowired
 	private JwtUtil jwtUtil;
 
+	@Autowired
 	private AuthenticationManager authenticationManager;
 
 	@PostMapping("login")
@@ -34,11 +35,11 @@ public class AuthController {
 					new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
 			User user = (User) authenticate.getPrincipal();
-
+			user.setPassword(null);
 			return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, jwtUtil.generateToken(user)).body(user);
 
 		} catch (BadCredentialsException ex) {
-			return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 
 	}
