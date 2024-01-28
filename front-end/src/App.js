@@ -4,6 +4,8 @@ import "./App.css";
 import { useLocalState } from "./util/useLocalStorage";
 import Dashboard from "./Dashboard";
 import Homepage from "./Homepage";
+import Login from "./Login";
+import PrivateRoute from "./PrivateRoute";
 
 
 function App() {
@@ -42,7 +44,16 @@ function App() {
   // above the return statement is the code that supports the view
   return ( 
     <Routes>
-      <Route path="/dashboard" element={<Dashboard />} />
+
+      <Route 
+        path="/dashboard" 
+        element={
+          <PrivateRoute>
+           <Dashboard /> 
+          </PrivateRoute>
+        }
+      />
+      <Route path="login" element={<Login />} />
       <Route 
         path="/" 
         element={<Homepage/> } 

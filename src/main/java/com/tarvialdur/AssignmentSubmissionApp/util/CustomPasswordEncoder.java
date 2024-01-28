@@ -12,7 +12,7 @@ public class CustomPasswordEncoder {
 
 	public CustomPasswordEncoder() {
 		this.passwordEncoder = new BCryptPasswordEncoder();
-		
+
 	}
 
 	@Bean
