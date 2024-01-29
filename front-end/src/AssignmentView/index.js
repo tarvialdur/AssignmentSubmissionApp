@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocalState } from '../util/useLocalStorage';
+import ajax from '../Services/fetchServices';
 
 const AssignmentView = () => {
     const [jwt, setJwt] = useLocalState("", "jwt");
@@ -17,39 +18,23 @@ const AssignmentView = () => {
 
     }
 
-    function save(){
-        fetch(`/api/assignments/${assignmentId}`, {
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${jwt}`, 
-            },
-            method: "PUT",
-            body: JSON.stringify(assignment)
-        }).then(response => {
-            if (response.status === 200) return response.json();
-        }).then(assignmentData => {
+    function save() {
+        ajax(`/api/assignments/${assignmentId}`, "PUT", jwt, assignment).then(
+            (assignmentData) => {
             setAssignment(assignmentData);
-        });
+        }
+        );
     }
 
 
 
 
     useEffect(() => {
-        
-        fetch(`/api/assignments/${assignmentId}`, {
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${jwt}`, 
-            },
-            method: "GET",
-        })
-        .then(response => {
-            if(response.status === 200) return response.json();
-        })
-        .then((assignmentData) => {
+        ajax(`/api/assignments/${assignmentId}`, "GET", jwt).then(
+            (assignmentData) => {
             setAssignment(assignmentData);
-        });
+         }
+        );
     }, []);    
 
     return (
