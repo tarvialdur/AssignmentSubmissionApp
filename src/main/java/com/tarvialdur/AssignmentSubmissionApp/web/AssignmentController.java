@@ -31,8 +31,18 @@ public class AssignmentController {
     }
 
     @GetMapping("{assignmentId}")
-    public ResponseEntity<?> getAssignments(@PathVariable Long assignmentId, @AuthenticationPrincipal User user){
+    public ResponseEntity<?> getAssignment(@PathVariable Long assignmentId, @AuthenticationPrincipal User user){
         Optional<Assignment> assignmentsOptional = assignmentService.findById(assignmentId);
         return ResponseEntity.ok(assignmentsOptional.orElse(new Assignment()));
+    }
+
+    @PutMapping("{assignmentId}")
+    public ResponseEntity<?> updateAssignment(@PathVariable Long assignmentId,
+                                                                                  @RequestBody Assignment assignment,
+                                                                                  @AuthenticationPrincipal User user
+                                                                                  ) {
+            Assignment updatedAssignment  = assignmentService.save(assignment);
+            return ResponseEntity.ok(updatedAssignment);
+
     }
 }
