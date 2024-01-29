@@ -12,33 +12,9 @@ function App() {
   const [jwt, setJwt] = useLocalState("", "jwt");
   
 /*  
-  useEffect(() => {
-    if(!jwt) {
-    const reqBody = {
-      "username": "tarvi",
-      "password": "asdfasdf"
-    };
-
-    fetch("/api/auth/login", {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "post",
-      body: JSON.stringify(reqBody),
-    })
-    .then((response) => Promise.all([response.json(), response.headers]))
-    .then(([body, headers]) => {
-      setJwt(headers.get("authorization"));
-  });
-  }
-  }, [] ); 
+ 
 */
-
-  useEffect(() => {
-    console.log(`JWT is: ${jwt}`);
-  }, [jwt]);
   
-
 
   // in return statement is the VIEW to the webpage
   // above the return statement is the code that supports the view
