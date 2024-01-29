@@ -10,9 +10,10 @@ public class Assignment {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	private String status;
 	private String githubUrl;
 	private String branch;
-	private String codeRevievVideoUrl;
+	private String codeReviewVideoUrl;
 
 	@ManyToOne(optional = false)
 	private User user;
@@ -44,11 +45,11 @@ public class Assignment {
 	}
 
 	public String getCodeRevievVideoUrl() {
-		return codeRevievVideoUrl;
+		return codeReviewVideoUrl;
 	}
 
 	public void setCodeRevievVideoUrl(String codeRevievVideoUrl) {
-		this.codeRevievVideoUrl = codeRevievVideoUrl;
+		this.codeReviewVideoUrl = codeRevievVideoUrl;
 	}
 
 	public User getUser() {
@@ -59,4 +60,9 @@ public class Assignment {
 		this.user = user;
 	}
 
+	public String getStatus() {return status;}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
 }
