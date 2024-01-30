@@ -46,7 +46,7 @@ public class JwtFilter extends OncePerRequestFilter {
 		}
 
 		// Authorization -> [Bearer ], [asdfdsafkasjg98234.123r1weqf.qasdfadv]
-		// splitting the token with a space and give me next one, the chiberdy jab and
+		// need to split the token with a space and give me next one, the chiberdy jab and
 		// trim in case there are any spaces between characters
 		final String token = header.split(" ")[1].trim();
 

@@ -15,4 +15,4 @@ function useLocalState(defaultValue, key){
     return [value, setValue];
 }
 // export makes the method publicly accessible
-export {useLocalState}
+export { useLocalState };

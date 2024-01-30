@@ -1,6 +1,5 @@
 
-function ajax (url, requestMethod, jwt, requestBody){
-
+function ajax (url, requestMethod, jwt, requestBody) {
     const fetchData = {
         headers: {
             "Content-Type": "application/json"
@@ -18,6 +17,7 @@ function ajax (url, requestMethod, jwt, requestBody){
 
     return fetch(url, fetchData).then((response) => {
         if(response.status === 200) return response.json();
+        
     });
 }
 

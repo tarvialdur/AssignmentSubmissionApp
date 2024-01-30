@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { Route, Routes } from "react-router-dom";
 import "./App.css";
+import { Route, Routes } from "react-router-dom";
 import { useLocalState } from "./util/useLocalStorage";
 import Dashboard from "./Dashboard";
 import Homepage from "./Homepage";
@@ -11,7 +11,6 @@ import AssignmentView from "./AssignmentView";
 
 function App() {
   const [jwt, setJwt] = useLocalState("", "jwt");
-  
 /*  
  
 */
@@ -21,7 +20,6 @@ function App() {
   // above the return statement is the code that supports the view
   return ( 
     <Routes>
-
       <Route 
         path="/dashboard" 
         element={
@@ -30,7 +28,6 @@ function App() {
           </PrivateRoute>
         }
       />
-
       <Route 
           path="/assignments/:id"
           element={
@@ -39,7 +36,6 @@ function App() {
             </PrivateRoute>
           }
       />
-      
       <Route path="login" element={<Login />} />
       <Route 
         path="/" 
@@ -47,6 +43,6 @@ function App() {
         />
     </Routes>
   );
-}
+  }
 
 export default App;

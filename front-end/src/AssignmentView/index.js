@@ -7,16 +7,15 @@ const AssignmentView = () => {
     const assignmentId = window.location.href.split("/assignments/")[1];
     const [assignment, setAssignment] = useState({
         branch: "",
-        githubUrl: "",
+        githubUrl: ""
     });
 
     function updateAssignment(prop, value) {
-        
-        const newAssignment = {...assignment};
+        const newAssignment = { ...assignment };
         newAssignment[prop] = value;
         setAssignment(newAssignment);
-
     }
+
 
     function save() {
         ajax(`/api/assignments/${assignmentId}`, "PUT", jwt, assignment).then(
@@ -25,13 +24,12 @@ const AssignmentView = () => {
         }
         );
     }
-
-
-
-
+    
     useEffect(() => {
         ajax(`/api/assignments/${assignmentId}`, "GET", jwt).then(
             (assignmentData) => {
+            if (assignmentData.branch === null) assignmentData.branch = "";
+            if (assignmentData.githubUrl === null) assignmentData.githubUrl = "";
             setAssignment(assignmentData);
          }
         );
@@ -58,11 +56,10 @@ const AssignmentView = () => {
                     />
                 </h3>
 
-               <button onClick={() => save()}>Submit assignment</button>
+               <button onClick={() => save()}>Submit Assignment</button>
             </>
             ) : ( 
-            <>
-            </>
+            <></>
             )}
         </div>
     );

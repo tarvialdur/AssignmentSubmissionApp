@@ -9,21 +9,21 @@ const Login = () => {
 
     function sendLoginRequest() {
             const reqBody = {
-              "username": username,
-              "password": password,
+              username: username,
+              password: password,
             };
         
+           
             fetch("/api/auth/login", {
               headers: {
                 "Content-Type": "application/json",
               },
-              method: "post",
+              method: "POST",
               body: JSON.stringify(reqBody),
             })
             .then((response) => {
                 if(response.status === 200)
                     return Promise.all([response.json(), response.headers]);
-                   
                 else
                     return Promise.reject("Invalid login attempt");
             })
