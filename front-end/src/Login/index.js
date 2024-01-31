@@ -46,11 +46,13 @@ const Login = () => {
 
 
       <>
-      <Container className="mt-5" >
+      <Container className="mt-5" border="5px" >
 
 
         <Row className="justify-content-center">
+          
           <Col md="8" lg="6">
+            <h1 className="mb-4">Sign in</h1>
         <Form.Group className="mb-3"  controlId="username">
               <Form.Label className="fs-4">
                 Username
@@ -58,7 +60,7 @@ const Login = () => {
               <Form.Control
               type="email" 
               size="lg"
-              placeholder=""
+              placeholder="username"
               value={username} 
               onChange={(e) => setUsername(e.target.value)}
               />
@@ -74,7 +76,7 @@ const Login = () => {
             <Form.Control 
             type="password"
             size="lg"
-            placeholder=""
+            placeholder="password"
             value={password} 
             onChange={(e) => setPassword(e.target.value)}
             />

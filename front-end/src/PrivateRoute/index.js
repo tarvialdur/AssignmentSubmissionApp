@@ -1,12 +1,32 @@
 import React from 'react';
 import { useLocalState } from '../util/useLocalStorage';
+import ajax from "../Services/fetchServices";
 import { Navigate } from "react-router-dom"; 
+import { useState } from "react";
+
  
 const PrivateRoute = ({ children }) => {
     const [jwt, setJwt] = useLocalState("", "jwt");
+    const [isLoading, setIsLoading] = useState(true);
+    const [isValid, setIsValid] = useState(null);
+    
+     if(jwt){
+    ajax(`/api/auth/validate?token=${jwt}`, "GET", jwt).then(isValid => {
+        setIsValid(isValid);
+        setIsLoading(false);
+        return isValid === true ? children : <Navigate to="/login" />;  
+    });
+    } else { 
+        return <Navigate to="/login" />;
+    }   
 
-    //check if jwt is present. if it is, then render the children(dashboard for ex.) if not, direct to login page
-    return jwt ? children : <Navigate to="/login" />;
+    return  isLoading ? ( 
+    <div>Loading...</div> 
+    ) : isValid === true ? ( 
+        children 
+    ) : ( 
+        <Navigate to="/login" />
+    );
 };
 
 export default PrivateRoute;

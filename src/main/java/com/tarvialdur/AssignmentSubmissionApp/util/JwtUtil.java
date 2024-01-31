@@ -19,9 +19,11 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Component
 public class JwtUtil implements Serializable {
 
+	//  helper methods to accomplish the JWT validation
+
 	private static final long serialVersionUID = 8938501904445538883L;
 
-	public static final long JWT_TOKEN_VALIDITY = 12 * 30 * 24 * 60 * 60;
+	public static final long JWT_TOKEN_VALIDITY = 60 * 60;
 
 	@Value("${jwt.secret}")
 	private String secret;
@@ -76,9 +78,6 @@ public class JwtUtil implements Serializable {
 	}
 
 	public Boolean validateToken(String token, UserDetails userDetails) {
-		if (!StringUtils.hasText(token))
-			return false;
-
 		final String username = getUsernameFromToken(token);
 		return (userDetails != null && username.equals(userDetails.getUsername()) && !isTokenExpired(token));
 	}
