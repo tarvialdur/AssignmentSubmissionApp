@@ -2,6 +2,7 @@ package com.tarvialdur.AssignmentSubmissionApp.web;
 
 import com.tarvialdur.AssignmentSubmissionApp.domain.Assignment;
 import com.tarvialdur.AssignmentSubmissionApp.domain.User;
+import com.tarvialdur.AssignmentSubmissionApp.dto.AssignmentResponseDto;
 import com.tarvialdur.AssignmentSubmissionApp.service.AssignmentService;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +33,9 @@ public class AssignmentController {
 
     @GetMapping("{assignmentId}")
     public ResponseEntity<?> getAssignment(@PathVariable Long assignmentId, @AuthenticationPrincipal User user){
-        Optional<Assignment> assignmentsOptional = assignmentService.findById(assignmentId);
-        return ResponseEntity.ok(assignmentsOptional.orElse(new Assignment()));
+        Optional<Assignment> assignmentOptional = assignmentService.findById(assignmentId);
+        AssignmentResponseDto response = new AssignmentResponseDto(assignmentOptional.orElse(new Assignment()));
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("{assignmentId}")

@@ -8,8 +8,13 @@ const AssignmentView = () => {
     const assignmentId = window.location.href.split("/assignments/")[1];
     const [assignment, setAssignment] = useState({
         branch: "",
-        githubUrl: ""
+        githubUrl: "",
+        number: null,
+        status: null
     });
+    const[assignmentEnums, setAssignmentEnums] = useState([]);
+   
+    
 
     function updateAssignment(prop, value) {
         const newAssignment = { ...assignment };
@@ -19,6 +24,7 @@ const AssignmentView = () => {
 
 
     function save() {
+        // user submitting the assignmint first time
         ajax(`/api/assignments/${assignmentId}`, "PUT", jwt, assignment).then(
             (assignmentData) => {
             setAssignment(assignmentData);
@@ -28,20 +34,26 @@ const AssignmentView = () => {
     
     useEffect(() => {
         ajax(`/api/assignments/${assignmentId}`, "GET", jwt).then(
-            (assignmentData) => {
+            (assignmentResponse) => {
+                let assignmentData = assignmentResponse.assignment;
             if (assignmentData.branch === null) assignmentData.branch = "";
             if (assignmentData.githubUrl === null) assignmentData.githubUrl = "";
             setAssignment(assignmentData);
+            setAssignmentEnums(assignmentResponse.assignmentEnums);
          }
         );
     }, []);    
+
+    useEffect(() => {
+    console.log(assignmentEnums);
+     }, [assignmentEnums]);
 
     return (
         <Container className="mt-5">
 
         <Row className="d-flex align-items-center">
             <Col>
-                <h1>Assignment {assignmentId}</h1>
+              <h1>Assignment {assignmentId}</h1>
             </Col>
             <Col>
                 <Badge pill bg="info" style={{fontSize: "1em" }}>
@@ -59,13 +71,13 @@ const AssignmentView = () => {
         <DropdownButton
             as={ButtonGroup}
             id="assignmentName"
-            variant="info"
-            
-          >
-            {['1', '2', '3', '4', '5', '6'].map(assignmentNum => (
-            <Dropdown.Item eventKey={assignmentNum}>
-            
-                {assignmentNum}
+            variant={"info"}
+            title="Assignment 1"
+            >
+           
+            {assignmentEnums.map((assignmentEnum) => (
+            <Dropdown.Item eventKey={assignmentEnum.assignmentNumber}>
+                {assignmentEnum.assignmentNumber}
                 </Dropdown.Item> 
                 ))}
         
@@ -101,8 +113,6 @@ const AssignmentView = () => {
             />
         </Col>
     </Form.Group>
-
-            
                <Button size="lg" onClick={() => save()}>
                 Submit Assignment</Button>
             </>
