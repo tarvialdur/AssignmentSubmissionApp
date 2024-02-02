@@ -45,6 +45,5 @@ public class AssignmentController {
                                                                                   ) {
             Assignment updatedAssignment  = assignmentService.save(assignment);
             return ResponseEntity.ok(updatedAssignment);
-
     }
 }

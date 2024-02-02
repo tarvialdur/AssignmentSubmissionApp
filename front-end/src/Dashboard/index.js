@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocalState } from '../util/useLocalStorage';
 import { Link } from 'react-router-dom';
 import ajax from '../Services/fetchServices';
+import { Button } from 'react-bootstrap';
 
 const Dashboard = () => {
     const [jwt, setJwt] = useLocalState("", "jwt");
@@ -27,6 +28,7 @@ const Dashboard = () => {
         <div style={{ margin: "2em" }}>
             {assignments ? (
             assignments.map((assignment) => (
+            
             <div key={assignment.id}>
                 <Link to={`/assignments/${assignment.id}`}>
                     Assignment ID: {assignment.id}
@@ -36,7 +38,7 @@ const Dashboard = () => {
             ) : (
             <></>
         )}
-            <button onClick={() => createAssignment()}>Submit New Assignment</button>
+            <Button onClick={() => createAssignment()}>Submit New Assignment</Button>
         </div>
     );
 };

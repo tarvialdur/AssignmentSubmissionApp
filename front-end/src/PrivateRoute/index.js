@@ -21,7 +21,9 @@ const PrivateRoute = ({ children }) => {
     }   
 
     return  isLoading ? ( 
-    <div>Loading...</div> 
+
+
+    <div>LOADING...</div> 
     ) : isValid === true ? ( 
         children 
     ) : ( 

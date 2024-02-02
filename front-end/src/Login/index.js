@@ -51,7 +51,7 @@ const Login = () => {
 
         <Row className="justify-content-center">
           
-          <Col md="8" lg="6">
+          <Col md="8" lg="4">
             <h1 className="mb-4">Sign in</h1>
         <Form.Group className="mb-3"  controlId="username">
               <Form.Label className="fs-4">
@@ -60,7 +60,7 @@ const Login = () => {
               <Form.Control
               type="email" 
               size="lg"
-              placeholder="username"
+              placeholder=""
               value={username} 
               onChange={(e) => setUsername(e.target.value)}
               />
@@ -70,13 +70,13 @@ const Login = () => {
 
 
           <Row className="justify-content-center">
-            <Col md="8" lg="6">
+            <Col md="8" lg="4">
           <Form.Group className="mb-3" controlId="password">
             <Form.Label className="fs-4">Password</Form.Label>
             <Form.Control 
             type="password"
             size="lg"
-            placeholder="password"
+            placeholder=""
             value={password} 
             onChange={(e) => setPassword(e.target.value)}
             />
@@ -86,7 +86,7 @@ const Login = () => {
 
 
           <Row className="justify-content-center">
-            <Col md="8" lg="6" className="mt-2 d-flex flex-column gap-3 flex-md-row justify-content-md-between">
+            <Col md="8" lg="4" className="mt-2 d-flex flex-column gap-3 flex-md-row justify-content-md-between">
               <Button 
                 id="submit" 
                 type="button" 

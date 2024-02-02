@@ -2,6 +2,7 @@ package com.tarvialdur.AssignmentSubmissionApp.dto;
 
 import com.tarvialdur.AssignmentSubmissionApp.domain.Assignment;
 import com.tarvialdur.AssignmentSubmissionApp.enums.AssignmentEnum;
+import com.tarvialdur.AssignmentSubmissionApp.enums.AssignmentStatusEnum;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,6 +12,7 @@ public class AssignmentResponseDto {
 
     private Assignment assignment;
     private final AssignmentEnum[] assignmentEnums = AssignmentEnum.values();
+    private final AssignmentStatusEnum[] statusEnums = AssignmentStatusEnum.values();
     public AssignmentResponseDto(Assignment assignment) {
         super();
         this.assignment = assignment;
@@ -28,5 +30,7 @@ public class AssignmentResponseDto {
         return assignmentEnums;
     }
 
-
+    public AssignmentStatusEnum[] getStatusEnums() {
+        return statusEnums;
+    }
 }
