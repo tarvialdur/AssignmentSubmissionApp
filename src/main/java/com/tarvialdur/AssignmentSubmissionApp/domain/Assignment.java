@@ -10,6 +10,7 @@ public class Assignment {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	private String name;
 	private Integer number;
 	private String status;
 	private String githubUrl;
@@ -73,5 +74,9 @@ public class Assignment {
 
 	public void setNumber(Integer number) {
 		this.number = number;
+	}
+
+	public String getName() {
+		return name;
 	}
 }
