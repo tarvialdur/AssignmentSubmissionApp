@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useLocalState } from '../util/useLocalStorage';
 import ajax from '../Services/fetchServices';
 import { Badge, Button, Card, Col, Container, Row} from 'react-bootstrap';
-import { jwtDecode } from "jwt-decode";
 
 const CodeReviewerDashboard = () => {
     const [jwt, setJwt] = useLocalState("", "jwt");
@@ -26,8 +25,6 @@ const CodeReviewerDashboard = () => {
     
     return (
         
-        
-
         <Container>
             <Row>
                 <Col>
@@ -47,10 +44,29 @@ const CodeReviewerDashboard = () => {
                 <div className="h1">Code Reviewer Dashboard</div>
                 </Col>
             </Row>
+           {/* <div className="assignment-wrapper in-review"></div>*/}
+
+            <div className="assignment-wrapper submitted">
+                <div 
+                className="h3 px-4" 
+                style={{ 
+                    width: "min-content", 
+                    marginTop: "-2em",
+                    marginBottom: "1em",
+                    backgroundColor: "white",
+                    whiteSpace: "nowrap",
+                
+            }}>
+            Waiting for Review
+            </div>
+
+
+
+                
         {assignments ? (
            <div
            className="d-grid gap-4"
-           style={{ gridTemplateColumns: "repeat(auto-fill, 18rem"}}
+           style={{ gridTemplateColumns: "repeat(auto-fit, 18rem"}}
            >
               {assignments.map((assignment) => (
                 
@@ -96,6 +112,11 @@ const CodeReviewerDashboard = () => {
         ) : (
         <></>
         )}
+
+            </div>
+
+           {/* <div className="assignment-wrapper needs-update"></div>*/}
+
         </Container>
        
     );

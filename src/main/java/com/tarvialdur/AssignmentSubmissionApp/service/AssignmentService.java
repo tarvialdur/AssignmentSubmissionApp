@@ -3,6 +3,7 @@ package com.tarvialdur.AssignmentSubmissionApp.service;
 import com.tarvialdur.AssignmentSubmissionApp.domain.Assignment;
 import com.tarvialdur.AssignmentSubmissionApp.domain.User;
 import com.tarvialdur.AssignmentSubmissionApp.enums.AssignmentStatusEnum;
+import com.tarvialdur.AssignmentSubmissionApp.enums.AuthorityEnum;
 import com.tarvialdur.AssignmentSubmissionApp.repository.AssignmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,6 +51,17 @@ public class AssignmentService {
     }
 
     public Set<Assignment> findByUser(User user) {
+
+        boolean hasCodeReviewerRole = user.getAuthorities()
+                .stream()
+                .filter(auth -> AuthorityEnum.ROLE_CODE_REVIEWER.name().equals(auth.getAuthority()))
+                .count() > 0;
+        if(hasCodeReviewerRole){
+            // get assignments for code reviewer
+            return assignmentRepository.findByCodeReviewer(user);
+        } else{
+            // get assignments for the employee role
+        }
         return assignmentRepository.findByUser(user);
     }
 
