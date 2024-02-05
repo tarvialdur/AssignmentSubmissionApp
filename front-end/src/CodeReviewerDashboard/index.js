@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useLocalState } from '../util/useLocalStorage';
 import ajax from '../Services/fetchServices';
-import { Badge, Button, Card, Col, Row} from 'react-bootstrap';
+import { Badge, Button, Card, Col, Container, Row} from 'react-bootstrap';
+import { jwtDecode } from "jwt-decode";
 
-const Dashboard = () => {
+const CodeReviewerDashboard = () => {
     const [jwt, setJwt] = useLocalState("", "jwt");
     const [assignments, setAssignments] = useState(null);
 
@@ -25,8 +26,9 @@ const Dashboard = () => {
     
     return (
         
-      
-        <div style={{ margin: "2em" }}>
+        
+
+        <Container>
             <Row>
                 <Col>
                     <div 
@@ -35,16 +37,16 @@ const Dashboard = () => {
                     href="#" onClick={() =>{
                     setJwt(null); 
                     window.location.href=`/login`
-                    }}>Logout
+                    }}>
+                    Logout
                     </div>
                 </Col>
             </Row>
-
-            <div className="mb-4">
-
-          <Button size="lg" onClick={() => createAssignment()}>New Assignment</Button>
-
-            </div>
+            <Row>
+                <Col>
+                <div className="h1">Code Reviewer Dashboard</div>
+                </Col>
+            </Row>
         {assignments ? (
            <div
            className="d-grid gap-4"
@@ -94,9 +96,9 @@ const Dashboard = () => {
         ) : (
         <></>
         )}
-        </div>
+        </Container>
        
     );
 
 };
-export default Dashboard;
+export default CodeReviewerDashboard;

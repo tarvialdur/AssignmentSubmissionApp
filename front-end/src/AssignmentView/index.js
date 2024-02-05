@@ -2,6 +2,7 @@ import React, { useEffect, useState,useRef } from 'react';
 import { useLocalState } from '../util/useLocalStorage';
 import ajax from '../Services/fetchServices';
 import { Badge, Button, ButtonGroup, Col, Container, Dropdown, DropdownButton, Form, Row } from 'react-bootstrap';
+import Dashboard from '../Dashboard';
 
 
 
@@ -76,15 +77,9 @@ useEffect(() => {
 
     return (
         <Container className="mt-5">
-
         <Row className="d-flex align-items-center">
             <Col>
-            {assignment.number ? (
-                <h1>Assignment {assignment.number}</h1>
-            ) : ( 
-                <></> 
-            )}
-              
+            {assignment.number ? <h1>Assignment {assignment.number}</h1> : <></>}
             </Col>
             <Col>
                 <Badge pill bg="info" style={{fontSize: "1em" }}>
@@ -147,9 +142,17 @@ useEffect(() => {
             />
         </Col>
     </Form.Group>
-               <Button size="lg" onClick={() => save() }>
-                Submit assignment
-                </Button>
+
+<div className="d-flex gap-5">
+
+
+    <Button size="lg" onClick={() => { window.location.href = `/dashboard`; save(); }}>
+        Submit assignment
+    </Button>
+    <Button size="lg" variant="secondary" onClick={() => { window.location.href = `/dashboard`}}>
+        Back
+    </Button>
+    </div>
             </>
             ) : ( 
             <></>
