@@ -9,6 +9,11 @@ const CodeReviewerDashboard = () => {
     const [assignments, setAssignments] = useState(null);
 
 
+    function editReview(assignment){
+        window.location.href = `/assignments/${assignment.id}`;
+    }
+
+
     // jwt.io
     function claimAssignment(assignment){
         const decodedJwt = jwt_decode(jwt);
@@ -38,6 +43,7 @@ const CodeReviewerDashboard = () => {
         ajax("api/assignments", "GET", jwt).then(
             (assignmentsData) => {
                 setAssignments(assignmentsData);
+                console.log(assignmentsData);
             });
     }, [jwt]);
 
@@ -73,32 +79,15 @@ const CodeReviewerDashboard = () => {
                 <div className="h1">Code Reviewer Dashboard</div>
                 </Col>
             </Row>
-           {/* <div className="assignment-wrapper in-review"></div>*/}
-
-            <div className="assignment-wrapper submitted">
-                <div 
-                className="h3 px-2" 
-                style={{ 
-                    width: "min-content", 
-                    marginTop: "-2em",
-                    marginBottom: "1em",
-                    backgroundColor: "white",
-                    whiteSpace: "nowrap",
-                
-            }}>
-            Waiting for Review
-            </div>
-
-
-
-                
-        {assignments ? (
+           <div className="assignment-wrapper in-review">
+           <div className="assignment-wrapper-title h3 px-2" >In Review</div>
+           {assignments && assignments.filter(assignment => assignment.status === "In Review").length > 0 ? (
            <div
            className="d-grid gap-4"
            style={{ gridTemplateColumns: "repeat(auto-fit, 18rem"}}
            >
-              {assignments.map((assignment) => (
-                
+              {assignments.filter(assignment => assignment.status === "In Review")
+              .map((assignment) => (  
                 <Card 
                 key={assignment.id} 
                 style={{ width: "18rem", height: "18rem", background: "#FDF2E9"}}
@@ -118,7 +107,63 @@ const CodeReviewerDashboard = () => {
                   </Badge>
                 </div>
                   
+                  <Card.Text style={{ marginTop: "1em"}}>
+                    <p>
+                      <b>GitHub URL: </b>{assignment.githubUrl} 
+                      </p>
+                    <p>
+                      <b>Branch: {assignment.branch} </b>
+                      </p>
+                  </Card.Text>
+          
+                      <Button 
+                      variant="secondary"
+                      onClick={() => {editReview(assignment);
+                      }}>
+                        Review
+                      </Button>
+                   </Card.Body>
+                 </Card>
+               
+                  ))}
+            </div>
+        ) : (
+        <div>No assignments found!</div>
+        )}
 
+           </div>
+
+
+            <div className="assignment-wrapper submitted">
+                <div className="assignment-wrapper-title h3 px-2" >Waiting for Review</div>
+                
+        {assignments && assignments.filter(assignment => assignment.status === "Submitted")
+        .length > 0 ? (
+           <div
+           className="d-grid gap-4"
+           style={{ gridTemplateColumns: "repeat(auto-fit, 18rem"}}
+           >
+              {assignments.filter(assignment => assignment.status === "Submitted")
+              .map((assignment) => (
+                <Card 
+                key={assignment.id} 
+                style={{ width: "18rem", height: "18rem", background: "#FDF2E9"}}
+                >
+
+                <Card.Body className="d-flex flex-column justify-content-around">
+                  <Card.Title>Assignment #{assignment.number}</Card.Title>
+
+                <div className="d-flex align-items-start">
+                  <Badge 
+                    pill bg="info" 
+                    style={{ 
+                    fontSize: "1em", 
+                }}
+                >
+                  {assignment.status}
+                  </Badge>
+                </div>
+                  
                   <Card.Text style={{ marginTop: "1em"}}>
                     <p>
                       <b>GitHub URL: </b>{assignment.githubUrl} 
@@ -131,7 +176,8 @@ const CodeReviewerDashboard = () => {
                       <Button 
                       variant="secondary"
                       onClick={() => {claimAssignment(assignment);
-                      }}>Claim
+                      }}>
+                        View
                       </Button>
                    </Card.Body>
                  </Card>
@@ -139,12 +185,66 @@ const CodeReviewerDashboard = () => {
                   ))}
             </div>
         ) : (
-        <></>
+        <div>No assignments found!</div>
         )}
 
             </div>
 
-           {/* <div className="assignment-wrapper needs-update"></div>*/}
+           <div className="assignment-wrapper needs-update">
+           <div className="assignment-wrapper-title h3 px-2" >Needs Update</div>
+                
+                {assignments && assignments.filter(assignment => assignment.status === "Needs Update").length > 0 ? (
+                   <div
+                   className="d-grid gap-4" 
+                   style={{ gridTemplateColumns: "repeat(auto-fit, 18rem"}}
+                   >
+                      {assignments
+                      .filter(assignment => assignment.status === "Needs Update")
+                      .map((assignment) => (
+                        <Card 
+                        key={assignment.id} 
+                        style={{ width: "18rem", height: "18rem", background: "#FDF2E9"}}
+                        >
+        
+                        <Card.Body className="d-flex flex-column justify-content-around">
+                          <Card.Title>Assignment #{assignment.number}</Card.Title>
+        
+                        <div className="d-flex align-items-start">
+                          <Badge 
+                            pill bg="info" 
+                            style={{ 
+                            fontSize: "1em", 
+                        }}
+                        >
+                          {assignment.status}
+                          </Badge>
+                        </div>
+                          
+                          <Card.Text style={{ marginTop: "1em"}}>
+                            <p>
+                              <b>GitHub URL: </b>{assignment.githubUrl} 
+                              </p>
+                            <p>
+                              <b>Branch: {assignment.branch} </b>
+                              </p>
+                          </Card.Text>
+                  
+                              <Button 
+                              variant="secondary"
+                              onClick={() => {
+                                window.location.href=`/assignments/${assignment.id}`;
+                              }}>Check
+                              </Button>
+                           </Card.Body>
+                         </Card>
+                       
+                          ))}
+                    </div>
+                ) : (
+                <div>No assignments found!</div>
+                )}
+
+           </div>
 
         </Container>
        

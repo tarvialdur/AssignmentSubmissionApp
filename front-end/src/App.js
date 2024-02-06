@@ -10,6 +10,7 @@ import Homepage from "./Homepage";
 import Login from "./Login";
 import PrivateRoute from "./PrivateRoute";
 import AssignmentView from "./AssignmentView";
+import CodeReviewAssignmentView from "./CodeReviewAssignmentView";
 
 
 function App() {
@@ -40,16 +41,24 @@ function getRolesFromJWT(){
           <PrivateRoute>
           <Dashboard /> 
          </PrivateRoute>
-        )}
+        )
+      }
       />
       <Route 
           path="/assignments/:id"
           element={
+            roles.find((role) => role === "ROLE_CODE_REVIEWER") ? (
+            <PrivateRoute>
+              <CodeReviewAssignmentView />
+              </PrivateRoute>
+              ) : (
             <PrivateRoute>
               <AssignmentView />
             </PrivateRoute>
+              )
           }
       />
+      
       <Route path="login" element={<Login />} />
       <Route 
         path="/" 

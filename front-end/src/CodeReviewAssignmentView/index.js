@@ -6,7 +6,7 @@ import Dashboard from '../Dashboard';
 
 
 
-const AssignmentView = () => {
+const CodeReviewAssignmentView = () => {
     const [jwt, setJwt] = useLocalState("", "jwt");
     const assignmentId = window.location.href.split("/assignments/")[1];
     const [assignment, setAssignment] = useState({
@@ -29,13 +29,12 @@ const AssignmentView = () => {
         setAssignment(newAssignment);
     }
 
-
-    function save() {
+    function save(status) {
         //this implies that assignment is submitted for the first time
-        if(assignment.status === assignmentStatuses[0].status){
-            console.log("setting new status to be");
-            updateAssignment("status", assignmentStatuses[1].status);
+        if(status && assignment.status !== status) {
+            updateAssignment("status", status);
         }else{
+            
           persist();
         }
     }
@@ -48,7 +47,6 @@ const AssignmentView = () => {
     );
 }
 
-
 useEffect(() => {
     console.log("Previous value of assgnment", prevAssignmentValue.current);
     if(prevAssignmentValue.current.status !== assignment.status){
@@ -58,8 +56,6 @@ useEffect(() => {
     console.log("New value of assignment", assignment);
 }, [assignment]);
 
-
-    
 useEffect(() => {
     ajax(`/api/assignments/${assignmentId}`, "GET", jwt).then(
         (assignmentResponse) => {
@@ -69,8 +65,6 @@ useEffect(() => {
             setAssignment(assignmentData);
             setAssignmentEnums(assignmentResponse.assignmentEnums);
             setAssignmentStatuses(assignmentResponse.statusEnums);
-            //console.log(assignmentResponse.statusEnums);
-
         }
     );
 }, []); 
@@ -89,32 +83,7 @@ useEffect(() => {
         </Row>
             {assignment ? (
             <>
-            <Form.Group as={Row} className="my-3" controlId="assignmentName">
-        <Form.Label column sm="3" md="2">
-            Assignment Number: 
-        </Form.Label>
-        <Col sm="9" md="8" lg="6">
-        <DropdownButton
-            as={ButtonGroup}
-            variant={"info"}
-            title={
-                assignment.number 
-                ? `Assignment ${assignment.number}` 
-                : "Select an assignment"
-            }
-            onSelect={(selectedElement) => {
-                updateAssignment("number", selectedElement);
-            }}
-        >
-            {assignmentEnums.map((assignmentEnum) => (
-            <Dropdown.Item eventKey={assignmentEnum.assignmentNumber}>
-                {assignmentEnum.assignmentNumber}
-                </Dropdown.Item> 
-                ))}
-          </DropdownButton>
-        </Col>
-    </Form.Group>
-
+            
     <Form.Group as={Row} className="my-3" controlId="githubUrl">
         <Form.Label column sm="3" md="2">
             GitHub URL:
@@ -123,6 +92,7 @@ useEffect(() => {
           <Form.Control 
             onChange={(e) => updateAssignment("githubUrl", e.target.value)}
             type="url"
+            readOnly
             value={assignment.githubUrl}
             placeholder="https://github.com/username/repo-name" 
             />
@@ -136,6 +106,7 @@ useEffect(() => {
         <Col sm="9" md="8" lg="6">
           <Form.Control 
             type="text"
+            readOnly
             placeholder="example_branch_name"
             onChange={(e) => updateAssignment("branch", e.target.value)}
             value={assignment.branch}
@@ -143,38 +114,67 @@ useEffect(() => {
         </Col>
     </Form.Group>
 
-    {assignment.status === "Completed" ? ( 
-        <>
-        <div>
-        <Form.Group as={Row} className="d-flex align-items-center mb-3" controlId="codeReviewVideoUrl">
+    <Form.Group as={Row} className="my-3" controlId="githubUrl">
         <Form.Label column sm="3" md="2">
-            Code Review Video Url:
+            Video Review URL:
         </Form.Label>
         <Col sm="9" md="8" lg="6">
-          <a 
-          href={assignment.codeReviewVideoUrl} 
-          style={{ fontWeight: "bold" }}
-          >
-            {assignment.codeReviewVideoUrl}
-            </a>
+          <Form.Control 
+            onChange={(e) => updateAssignment("codeReviewVideoUrl", e.target.value)}
+            type="url"
+            
+            value={assignment.codeReviewVideoUrl}
+            placeholder="code review url" 
+            />
         </Col>
     </Form.Group>
-        </div>
-        <div className="d-flex gap-5">
-        <Button size="lg" variant="secondary" onClick={() => { window.location.href = `/dashboard`}}>
-            Back
-        </Button>
-        </div> 
-        </>
+
+
+<div className="d-flex gap-5">
+    {assignment.status === "Completed" ? (
+     <Button 
+        size="lg" 
+        variant="secondary"
+        onClick={() => save(assignmentStatuses[2].status)}
+    >
+      Re-Claim
+    </Button> 
     ) : ( 
-    <div className="d-flex gap-5">
-    <Button size="lg" onClick={() => { window.location.href = `/dashboard`; save(); }}>
-        Submit assignment
+    <Button 
+        size="lg" 
+        onClick={() => save(assignmentStatuses[4].status)}
+    >
+      Complete Review
+    </Button> 
+    )}
+    
+    {assignment.status === "Needs Update" ? (
+    <Button 
+        size="lg" 
+        variant="secondary" 
+        onClick={() => save(assignmentStatuses[2].status)}
+    >
+      Re-Claim
     </Button>
-    <Button size="lg" variant="secondary" onClick={() => { window.location.href = `/dashboard`}}>
+    ) : (
+    <Button 
+    size="lg" 
+    variant="danger" 
+    onClick={() => save(assignmentStatuses[3].status)}>
+        Reject Assignment
+    </Button>
+    )}
+
+    <Button
+    size="lg"
+    variant="secondary"
+    onClick={() =>  window.location.href = `/dashboard`}
+    >
         Back
     </Button>
-    </div>)}
+
+    </div>
+    
             </>
             ) : ( 
             <></>
@@ -183,4 +183,4 @@ useEffect(() => {
     );
 };
 
-export default AssignmentView;
+export default CodeReviewAssignmentView;

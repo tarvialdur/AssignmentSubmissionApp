@@ -71,7 +71,9 @@ const Dashboard = () => {
 
                 <div className="d-flex align-items-start">
                   <Badge 
-                    pill bg="info" 
+                    pill 
+                    
+                    bg={assignment.status === "Completed" ? "success" : "info"} 
                     style={{ 
                     fontSize: "1em", 
                 }}
