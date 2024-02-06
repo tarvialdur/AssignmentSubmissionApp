@@ -2,7 +2,7 @@ import React, { useEffect, useState,useRef } from 'react';
 import { useLocalState } from '../util/useLocalStorage';
 import ajax from '../Services/fetchServices';
 import { Badge, Button, ButtonGroup, Col, Container, Dropdown, DropdownButton, Form, Row } from 'react-bootstrap';
-import Dashboard from '../Dashboard';
+
 
 
 
@@ -69,8 +69,6 @@ useEffect(() => {
             setAssignment(assignmentData);
             setAssignmentEnums(assignmentResponse.assignmentEnums);
             setAssignmentStatuses(assignmentResponse.statusEnums);
-            //console.log(assignmentResponse.statusEnums);
-
         }
     );
 }, []); 
