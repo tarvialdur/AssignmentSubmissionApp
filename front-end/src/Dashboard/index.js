@@ -29,14 +29,23 @@ const Dashboard = () => {
         <div style={{ margin: "2em" }}>
             <Row>
                 <Col>
-                    <div 
+                    {/* <div 
                     className="d-flex justify-content-end"
                     style={{ cursor: "pointer" }}
                     href="#" onClick={() =>{
                     setJwt(null); 
                     window.location.href=`/login`
                     }}>Logout
-                    </div>
+                    </div> */}
+                    <Button 
+                    className="d-flex justify-content-start"
+                    style={{position: "fixed", top: "33px", right: "32px"}}
+                    variant="dark"
+                    href="#" onClick={() => {setJwt(null);
+                    window.location.href=`/login`
+                    }}>
+                        Logout
+                    </Button>
                 </Col>
             </Row>
 

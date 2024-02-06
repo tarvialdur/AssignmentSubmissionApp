@@ -20,7 +20,8 @@ public class Assignment {
 	@ManyToOne(optional = false)
 	private User user;
 
-	// TODO private User assignedTo;
+	@ManyToOne
+	private User codeReviewer;
 
 	public Long getId() {
 		return id;
@@ -78,5 +79,13 @@ public class Assignment {
 
 	public String getName() {
 		return name;
+	}
+
+	public User getCodeReviewer() {
+		return codeReviewer;
+	}
+
+	public void setCodeReviewer(User codeReviewer) {
+		this.codeReviewer = codeReviewer;
 	}
 }
