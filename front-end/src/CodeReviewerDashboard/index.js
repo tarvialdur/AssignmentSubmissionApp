@@ -3,14 +3,17 @@ import { useLocalState } from '../util/useLocalStorage';
 import ajax from '../Services/fetchServices';
 import { Badge, Button, Card, Col, Container, Row} from 'react-bootstrap';
 import { jwtDecode as jwt_decode } from "jwt-decode"; 
+import StatusBadge from '../StatusBadge';
+import { useNavigate } from 'react-router-dom';
 
 const CodeReviewerDashboard = () => {
+    const navigate = useNavigate();
     const [jwt, setJwt] = useLocalState("", "jwt");
     const [assignments, setAssignments] = useState(null);
 
 
     function editReview(assignment){
-        window.location.href = `/assignments/${assignment.id}`;
+        navigate(`/assignments/${assignment.id}`);
     }
 
 
@@ -59,16 +62,16 @@ const CodeReviewerDashboard = () => {
                     style={{ cursor: "pointer" }}
                     href="#" onClick={() =>{
                     setJwt(null); 
-                    window.location.href=`/login`
+                    navigate("/login");
                     }}>
                     Logout
                     </div> */}
 
                     <Button 
-                    style={{position: 'fixed', top: '33px', right: '32px'}}
+                    style={{position: 'fixed', top: '33px', right: '32px'}}   
                     variant="dark"
                     href="#" onClick={() => {setJwt(null);
-                    window.location.href=`/login`
+                    navigate("/login");  // POTENTIAL BUG!!!
                     }}>
                         Logout
                     </Button>
@@ -97,14 +100,7 @@ const CodeReviewerDashboard = () => {
                   <Card.Title>Assignment #{assignment.number}</Card.Title>
 
                 <div className="d-flex align-items-start">
-                  <Badge 
-                    pill bg="info" 
-                    style={{ 
-                    fontSize: "1em", 
-                }}
-                >
-                  {assignment.status}
-                  </Badge>
+                <StatusBadge text={assignment.status} />
                 </div>
                   
                   <Card.Text style={{ marginTop: "1em"}}>
@@ -154,14 +150,7 @@ const CodeReviewerDashboard = () => {
                   <Card.Title>Assignment #{assignment.number}</Card.Title>
 
                 <div className="d-flex align-items-start">
-                  <Badge 
-                    pill bg="info" 
-                    style={{ 
-                    fontSize: "1em", 
-                }}
-                >
-                  {assignment.status}
-                  </Badge>
+                <StatusBadge text={assignment.status} />
                 </div>
                   
                   <Card.Text style={{ marginTop: "1em"}}>
@@ -177,7 +166,7 @@ const CodeReviewerDashboard = () => {
                       variant="secondary"
                       onClick={() => {claimAssignment(assignment);
                       }}>
-                        View
+                        Claim
                       </Button>
                    </Card.Body>
                  </Card>
@@ -210,14 +199,7 @@ const CodeReviewerDashboard = () => {
                           <Card.Title>Assignment #{assignment.number}</Card.Title>
         
                         <div className="d-flex align-items-start">
-                          <Badge 
-                            pill bg="info" 
-                            style={{ 
-                            fontSize: "1em", 
-                        }}
-                        >
-                          {assignment.status}
-                          </Badge>
+                        <StatusBadge text={assignment.status} />
                         </div>
                           
                           <Card.Text style={{ marginTop: "1em"}}>
@@ -232,8 +214,10 @@ const CodeReviewerDashboard = () => {
                               <Button 
                               variant="secondary"
                               onClick={() => {
-                                window.location.href=`/assignments/${assignment.id}`;
-                              }}>Check
+                                navigate(`/assignments/${assignment.id}`);
+                              }}
+                              >
+                                Check
                               </Button>
                            </Card.Body>
                          </Card>

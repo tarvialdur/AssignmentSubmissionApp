@@ -1,12 +1,14 @@
 import React, { useEffect, useState,useRef } from 'react';
 import { useLocalState } from '../util/useLocalStorage';
 import ajax from '../Services/fetchServices';
-import { Badge, Button, ButtonGroup, Col, Container, Dropdown, DropdownButton, Form, Row } from 'react-bootstrap';
+import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import Dashboard from '../Dashboard';
-
+import StatusBadge from '../StatusBadge';
+import { useNavigate } from 'react-router-dom';
 
 
 const CodeReviewAssignmentView = () => {
+    const navigate = useNavigate();
     const [jwt, setJwt] = useLocalState("", "jwt");
     const assignmentId = window.location.href.split("/assignments/")[1];
     const [assignment, setAssignment] = useState({
@@ -30,11 +32,9 @@ const CodeReviewAssignmentView = () => {
     }
 
     function save(status) {
-        //this implies that assignment is submitted for the first time
         if(status && assignment.status !== status) {
             updateAssignment("status", status);
         }else{
-            
           persist();
         }
     }
@@ -73,12 +73,10 @@ useEffect(() => {
         <Container className="mt-5">
         <Row className="d-flex align-items-center">
             <Col>
-            {assignment.number ? <h1>Assignment {assignment.number}</h1> : <></>}
+            {assignment.number ? <h1>Assignment {assignment.number}</h1> : <></>} 
             </Col>
             <Col>
-                <Badge pill bg="info" style={{fontSize: "1em" }}>
-                    {assignment.status}
-                </Badge> 
+            <StatusBadge text={assignment.status} />
             </Col>
         </Row>
             {assignment ? (
@@ -124,7 +122,7 @@ useEffect(() => {
             type="url"
             
             value={assignment.codeReviewVideoUrl}
-            placeholder="code review url" 
+            placeholder="code_review_url" 
             />
         </Col>
     </Form.Group>
@@ -168,7 +166,7 @@ useEffect(() => {
     <Button
     size="lg"
     variant="secondary"
-    onClick={() =>  window.location.href = `/dashboard`}
+    onClick={() =>  navigate("/dashboard")}
     >
         Back
     </Button>

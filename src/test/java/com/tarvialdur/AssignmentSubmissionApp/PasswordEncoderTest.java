@@ -10,7 +10,7 @@ public class PasswordEncoderTest {
 	public void encode_password() {
 
 		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		System.out.println(passwordEncoder.encode("asdfasdf"));
+		System.out.println(passwordEncoder.encode("salakala"));
 
 	}
 }

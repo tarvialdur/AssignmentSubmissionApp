@@ -2,11 +2,13 @@ import React, { useEffect, useState,useRef } from 'react';
 import { useLocalState } from '../util/useLocalStorage';
 import ajax from '../Services/fetchServices';
 import { Badge, Button, ButtonGroup, Col, Container, Dropdown, DropdownButton, Form, Row } from 'react-bootstrap';
-
+import { useNavigate } from 'react-router-dom';
+import StatusBadge from '../StatusBadge';
 
 
 
 const AssignmentView = () => {
+    let navigate = useNavigate();
     const [jwt, setJwt] = useLocalState("", "jwt");
     const assignmentId = window.location.href.split("/assignments/")[1];
     const [assignment, setAssignment] = useState({
@@ -30,11 +32,10 @@ const AssignmentView = () => {
     }
 
 
-    function save() {
+    function save(status) {
         //this implies that assignment is submitted for the first time
-        if(assignment.status === assignmentStatuses[0].status){
-            console.log("setting new status to be");
-            updateAssignment("status", assignmentStatuses[1].status);
+        if(status && assignment.status !== status) {
+            updateAssignment("status", status);
         }else{
           persist();
         }
@@ -80,9 +81,7 @@ useEffect(() => {
             {assignment.number ? <h1>Assignment {assignment.number}</h1> : <></>}
             </Col>
             <Col>
-                <Badge pill bg="info" style={{fontSize: "1em" }}>
-                    {assignment.status}
-                </Badge> 
+            <StatusBadge text={assignment.status} />
             </Col>
         </Row>
             {assignment ? (
@@ -159,20 +158,40 @@ useEffect(() => {
     </Form.Group>
         </div>
         <div className="d-flex gap-5">
-        <Button size="lg" variant="secondary" onClick={() => { window.location.href = `/dashboard`}}>
+        <Button 
+        size="lg" 
+        variant="secondary" 
+        onClick={() => navigate("/dashboard")}
+        >
             Back
         </Button>
         </div> 
         </>
-    ) : ( 
+    ) : assignment.status === "Pending Submission" ? ( 
     <div className="d-flex gap-5">
-    <Button size="lg" onClick={() => { window.location.href = `/dashboard`; save(); }}>
+    <Button size="lg" onClick={() =>  save("Submitted")}>
         Submit assignment
     </Button>
-    <Button size="lg" variant="secondary" onClick={() => { window.location.href = `/dashboard`}}>
+    <Button 
+    size="lg" 
+    variant="secondary" 
+    onClick={() => navigate("/dashboard")}>
         Back
     </Button>
-    </div>)}
+    </div>
+    ) : ( 
+    <div className="d-flex gap-5">
+    <Button size="lg" onClick={() =>  save("Submitted")}>
+        Re-Submit assignment
+    </Button>
+    <Button 
+    size="lg" 
+    variant="secondary" 
+    onClick={() => navigate("/dashboard")}>
+        Back
+    </Button>
+    </div>
+    )}
             </>
             ) : ( 
             <></>

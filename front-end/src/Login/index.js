@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { useLocalState } from '../util/useLocalStorage';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+  const navigate = useNavigate();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
@@ -98,7 +100,8 @@ const Login = () => {
               <Button 
                 variant="secondary"
                 type="button" 
-                onClick={() =>{window.location.href ="/";
+                onClick={() =>{
+                  navigate("/");
               }}
                 size="lg"
                 >
@@ -112,4 +115,3 @@ const Login = () => {
 };
 
 export default Login;
-
