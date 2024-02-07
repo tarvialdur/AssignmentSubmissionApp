@@ -21,7 +21,8 @@ const Dashboard = () => {
     function createAssignment (){
         ajax("/api/assignments/", "POST", jwt).then(
             (assignment) => {
-            navigate(`/assignments/${assignment.id}`);
+              window.location.href = `/assignments/${assignment.id}`;
+            
         });
     }
     
@@ -89,7 +90,7 @@ const Dashboard = () => {
                       <Button 
                       variant="secondary"
                       onClick={() => {
-                        navigate(`/assignments/${assignment.id}`);
+                        window.location.href = `/assignments/${assignment.id}`;
                       }}>Edit
                       </Button>
                    </Card.Body>

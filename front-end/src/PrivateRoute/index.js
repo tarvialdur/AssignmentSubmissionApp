@@ -25,7 +25,7 @@ const PrivateRoute = ({ children }) => {
 
     <div>LOADING...</div> 
     ) : isValid === true ? ( 
-        children 
+        children
     ) : ( 
         <Navigate to="/login" />
     );

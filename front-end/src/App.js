@@ -31,14 +31,14 @@ function getRolesFromJWT(){
   return ( 
     <Routes>
       <Route 
-        path="/dashboard" 
+        path="/dashboard"
         element={
           roles.find((role) => role === "ROLE_CODE_REVIEWER") ? (
           <PrivateRoute>
            <CodeReviewerDashboard /> 
           </PrivateRoute> 
           ) : (
-          <PrivateRoute>
+          <PrivateRoute >
           <Dashboard /> 
          </PrivateRoute>
         )

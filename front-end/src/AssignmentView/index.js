@@ -181,8 +181,8 @@ useEffect(() => {
     </div>
     ) : ( 
     <div className="d-flex gap-5">
-    <Button size="lg" onClick={() =>  save("Submitted")}>
-        Re-Submit assignment
+    <Button size="lg" onClick={() =>  save("Resubmitted")}>
+        Resubmit assignment
     </Button>
     <Button 
     size="lg" 

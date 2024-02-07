@@ -14,7 +14,8 @@ public interface AssignmentRepository extends JpaRepository<Assignment, Long> {
 
 
     //collecting the assignments to be displayed on screen for the code reviewer
-    @Query("SELECT a FROM Assignment a WHERE a.status =  'submitted' or a.codeReviewer = :codeReviewer ")
+    @Query("SELECT a FROM Assignment a WHERE  (a.status =  'submitted' and (a.codeReviewer is null or a.codeReviewer = :codeReviewer))" +
+            "or a.codeReviewer = :codeReviewer ")
     Set<Assignment> findByCodeReviewer(User codeReviewer);
 
 

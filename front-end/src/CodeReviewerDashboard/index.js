@@ -13,7 +13,8 @@ const CodeReviewerDashboard = () => {
 
 
     function editReview(assignment){
-        navigate(`/assignments/${assignment.id}`);
+        window.location.href = `/assignments/${assignment.id}`;  // couldn't get navigate() to work...
+        
     }
 
 
@@ -133,13 +134,26 @@ const CodeReviewerDashboard = () => {
             <div className="assignment-wrapper submitted">
                 <div className="assignment-wrapper-title h3 px-2" >Waiting for Review</div>
                 
-        {assignments && assignments.filter(assignment => assignment.status === "Submitted")
-        .length > 0 ? (
+        {assignments && 
+        assignments.filter(
+          (assignment) => 
+          assignment.status === "Submitted" || 
+          assignment.status === "Resubmitted"
+          ).length > 0 ? (
            <div
            className="d-grid gap-4"
            style={{ gridTemplateColumns: "repeat(auto-fit, 18rem"}}
            >
-              {assignments.filter(assignment => assignment.status === "Submitted")
+              {assignments
+              .filter(
+                (assignment) => 
+                assignment.status === "Submitted" || 
+                assignment.status === "Resubmitted"
+                )
+                .sort((a,b) => {
+                  if(a.status === "Resubmitted") return -1;
+                  else return 1;
+                })
               .map((assignment) => (
                 <Card 
                 key={assignment.id} 
@@ -214,7 +228,7 @@ const CodeReviewerDashboard = () => {
                               <Button 
                               variant="secondary"
                               onClick={() => {
-                                navigate(`/assignments/${assignment.id}`);
+                                window.location.href = `/assignments/${assignment.id}`
                               }}
                               >
                                 Check
