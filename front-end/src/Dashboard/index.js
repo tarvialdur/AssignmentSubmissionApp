@@ -23,7 +23,6 @@ const Dashboard = () => {
         ajax("/api/assignments/", "POST", user.jwt).then(
             (assignment) => {
                 navigate(`/assignments/${assignment.id}`);
-              //window.location.href = `/assignments/${assignment.id}`;
             
         });
     }
@@ -35,15 +34,15 @@ const Dashboard = () => {
         <div style={{ margin: "2em" }}>
             <Row>
                 <Col>
-                    {/* <div 
+                     <div 
                     className="d-flex justify-content-end"
                     style={{ cursor: "pointer" }}
                     href="#" onClick={() =>{
-                    setuser.Jwt(null); 
+                    user.setJwt(null); 
                     navigate("/login");
                     }}>Logout
-                    </div> */}
-                    <Button 
+                    </div>
+                   {/*<Button 
                     className="d-flex justify-content-start"
                     style={{position: "fixed", top: "33px", right: "32px"}}
                     variant="dark"
@@ -51,7 +50,7 @@ const Dashboard = () => {
                     navigate("/login");
                     }}>
                         Logout
-                    </Button>
+                  </Button>*/}
                 </Col>
             </Row>
 
@@ -93,7 +92,6 @@ const Dashboard = () => {
                       variant="secondary"
                       onClick={() => {
                           navigate(`/assignments/${assignment.id}`);
-                        //window.location.href = `/assignments/${assignment.id}`;
                       }}>Edit
                       </Button>
                    </Card.Body>

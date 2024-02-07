@@ -16,11 +16,8 @@ const CodeReviewerDashboard = () => {
     });
 
     function editReview(assignment){
-        navigate(`/assignments/${assignment.id}`);
-        //window.location.href = `/assignments/${assignment.id}`;  // couldn't get navigate() to work...
-        
+        navigate(`/assignments/${assignment.id}`);        
     }
-
 
     // jwt.io
     function claimAssignment(assignment){
@@ -38,7 +35,6 @@ const CodeReviewerDashboard = () => {
                 assignmentsCopy[i] = updatedAssignment;
                 setAssignments(assignmentsCopy);
 
-            // TODO: update the view for assignment that changedas
         })
     }
 
@@ -68,7 +64,7 @@ const CodeReviewerDashboard = () => {
                     </div> */}
 
                     <Button 
-                    style={{position: 'fixed', top: '33px', right: '32px'}}   
+                    style={{top: '33px', right: '32px'}}   
                     variant="dark"
                     onClick={() => {
                       user.setJwt(null);
@@ -229,7 +225,6 @@ const CodeReviewerDashboard = () => {
                               variant="secondary"
                               onClick={() => {
                                 navigate(`/assignments/${assignment.id}`);
-                                //window.location.href = `/assignments/${assignment.id}`
                               }}
                               >
                                 Check
