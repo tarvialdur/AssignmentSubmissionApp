@@ -53,25 +53,15 @@ const CodeReviewerDashboard = () => {
         <Container>
             <Row>
                 <Col>
-                    {/* <div 
+                    <div 
                     className="d-flex justify-content-end"
                     style={{ cursor: "pointer" }}
                     href="#" onClick={() =>{
-                    setJwt(null); 
+                    user.setJwt(null); 
                     navigate("/login");
                     }}>
                     Logout
-                    </div> */}
-
-                    <Button 
-                    style={{top: '33px', right: '32px'}}   
-                    variant="dark"
-                    onClick={() => {
-                      user.setJwt(null);
-                    navigate("/login");  
-                    }}>
-                        Logout
-                    </Button>
+                    </div> 
                 </Col>
             </Row>
             <Row>
