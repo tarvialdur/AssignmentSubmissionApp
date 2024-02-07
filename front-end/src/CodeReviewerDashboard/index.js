@@ -1,55 +1,54 @@
 import React, { useEffect, useState } from 'react';
-import { useLocalState } from '../util/useLocalStorage';
 import ajax from '../Services/fetchServices';
-import { Badge, Button, Card, Col, Container, Row} from 'react-bootstrap';
+import { Button, Card, Col, Container, Row} from 'react-bootstrap';
 import { jwtDecode as jwt_decode } from "jwt-decode"; 
 import StatusBadge from '../StatusBadge';
 import { useNavigate } from 'react-router-dom';
+import { useUser } from '../UserProvider';
 
 const CodeReviewerDashboard = () => {
     const navigate = useNavigate();
-    const [jwt, setJwt] = useLocalState("", "jwt");
+    const user = useUser();
     const [assignments, setAssignments] = useState(null);
 
+    useEffect(() => {
+      if(!user.jwt) navigate("/login");
+    });
 
     function editReview(assignment){
-        window.location.href = `/assignments/${assignment.id}`;  // couldn't get navigate() to work...
+        navigate(`/assignments/${assignment.id}`);
+        //window.location.href = `/assignments/${assignment.id}`;  // couldn't get navigate() to work...
         
     }
 
 
     // jwt.io
     function claimAssignment(assignment){
-        const decodedJwt = jwt_decode(jwt);
-        const user = {
+        const decodedJwt = jwt_decode(user.jwt);
+        const currentUser = {
             username: decodedJwt.sub,
-            
         }
-        assignment.codeReviewer = user;
+        assignment.codeReviewer = currentUser;
         //TODO: don't hard code this status
         assignment.status = "In Review";
-        ajax(`/api/assignments/${assignment.id}`, "PUT", jwt, assignment).then(
+        ajax(`/api/assignments/${assignment.id}`, "PUT", user.jwt, assignment).then(
             (updatedAssignment) =>{
                 const assignmentsCopy = [...assignments];
                 const i = assignmentsCopy.findIndex(a => a.id === assignment.id);
                 assignmentsCopy[i] = updatedAssignment;
                 setAssignments(assignmentsCopy);
 
-
-
             // TODO: update the view for assignment that changedas
         })
     }
 
-
-
     useEffect(() => {
-        ajax("api/assignments", "GET", jwt).then(
+        ajax("api/assignments", "GET", user.jwt).then(
             (assignmentsData) => {
                 setAssignments(assignmentsData);
                 console.log(assignmentsData);
             });
-    }, [jwt]);
+    }, [user.jwt]);
 
     
     
@@ -71,8 +70,9 @@ const CodeReviewerDashboard = () => {
                     <Button 
                     style={{position: 'fixed', top: '33px', right: '32px'}}   
                     variant="dark"
-                    href="#" onClick={() => {setJwt(null);
-                    navigate("/login");  // POTENTIAL BUG!!!
+                    onClick={() => {
+                      user.setJwt(null);
+                    navigate("/login");  
                     }}>
                         Logout
                     </Button>
@@ -228,7 +228,8 @@ const CodeReviewerDashboard = () => {
                               <Button 
                               variant="secondary"
                               onClick={() => {
-                                window.location.href = `/assignments/${assignment.id}`
+                                navigate(`/assignments/${assignment.id}`);
+                                //window.location.href = `/assignments/${assignment.id}`
                               }}
                               >
                                 Check

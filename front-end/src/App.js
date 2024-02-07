@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 //import jwt_decode from "jwt-decode";
 import { jwtDecode as jwt_decode } from "jwt-decode"; 
 import "./App.css";
@@ -11,32 +11,44 @@ import Login from "./Login";
 import PrivateRoute from "./PrivateRoute";
 import AssignmentView from "./AssignmentView";
 import CodeReviewAssignmentView from "./CodeReviewAssignmentView";
+import { UserProvider, useUser }  from "./UserProvider";
 
 
 function App() {
-  const [jwt, setJwt] = useLocalState("", "jwt");
-  const [roles, setRoles] = useState(getRolesFromJWT());
+  //const [jwt, setJwt] = useLocalState("", "jwt");
+  const [roles, setRoles] = useState([]);
+  const user = useUser(); 
+
+  useEffect(() => {
+    console.log("JWT has changed");
+    setRoles(getRolesFromJWT());
+  }, [user.jwt]);
   
 function getRolesFromJWT(){
-  if(jwt){
-    const decodedJwt = jwt_decode(jwt);
-    console.log(jwt);
+  if(user.jwt){
+    const decodedJwt = jwt_decode(user.jwt);
+    console.log("decoded JWT:", decodedJwt);
+
     return decodedJwt.authorities;
-  } return [];
+  } 
+  return [];
+
   // get role from jwt and assign via setRole() 
 }
 
   // in return statement is the VIEW to the webpage
   // above the return statement is the code that supports the view
   return ( 
+ 
     <Routes>
       <Route 
         path="/dashboard"
         element={
           roles.find((role) => role === "ROLE_CODE_REVIEWER") ? (
-          <PrivateRoute>
+          <PrivateRoute >
            <CodeReviewerDashboard /> 
           </PrivateRoute> 
+            
           ) : (
           <PrivateRoute >
           <Dashboard /> 
@@ -58,13 +70,13 @@ function getRolesFromJWT(){
               )
           }
       />
-      
       <Route path="login" element={<Login />} />
       <Route 
         path="/" 
         element={<Homepage/> } 
         />
     </Routes>
+
   );
   }
 

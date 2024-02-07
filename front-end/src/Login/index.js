@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
-import { useLocalState } from '../util/useLocalStorage';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useUser } from '../UserProvider';
 
 const Login = () => {
-  const navigate = useNavigate();
+    const user = useUser();
+    const navigate = useNavigate();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    const [jwt, setJwt] = useLocalState("", "jwt");
+    useEffect(() => {
+     if (user.jwt) navigate("/dashboard");
+    }, [user]);
 
     function sendLoginRequest() {
             const reqBody = {
@@ -32,30 +36,21 @@ const Login = () => {
                     return Promise.reject("Invalid login attempt");
             })
             .then(([body, headers]) => {
-              setJwt(headers.get("authorization"));
-              window.location.href = "dashboard";
+              user.setJwt(headers.get("authorization"));
+              
           })
           .catch((message) => {
             alert(message);
           });
     }
-
-
-
-
     return (
-
-
 
       <>
       <Container className="mt-5" border="5px" >
-
-
         <Row className="justify-content-center">
-          
           <Col md="8" lg="4">
             <h1 className="mb-4">Sign in</h1>
-        <Form.Group className="mb-3"  controlId="username">
+            <Form.Group className="mb-3"  controlId="username">
               <Form.Label className="fs-4">
                 Username
               </Form.Label>

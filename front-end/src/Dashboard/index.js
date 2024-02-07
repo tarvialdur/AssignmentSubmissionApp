@@ -1,27 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { useLocalState } from '../util/useLocalStorage';
 import ajax from '../Services/fetchServices';
-import { Badge, Button, Card, Col, Row} from 'react-bootstrap';
+import { Button, Card, Col, Row} from 'react-bootstrap';
 import StatusBadge from '../StatusBadge';
 import { useNavigate } from 'react-router-dom';
+import { useUser } from '../UserProvider';
 
 const Dashboard = () => {
   const navigate = useNavigate();
-    const [jwt, setJwt] = useLocalState("", "jwt");
+    const user = useUser();
     const [assignments, setAssignments] = useState(null);
 
     useEffect(() => {
-        ajax("api/assignments", "GET", jwt).then(
+        ajax("api/assignments", "GET", user.jwt).then(
             (assignmentsData) => {
                 setAssignments(assignmentsData);
             });
-    }, [jwt]);
+    }, [user.jwt]);
 
 
     function createAssignment (){
-        ajax("/api/assignments/", "POST", jwt).then(
+        ajax("/api/assignments/", "POST", user.jwt).then(
             (assignment) => {
-              window.location.href = `/assignments/${assignment.id}`;
+                navigate(`/assignments/${assignment.id}`);
+              //window.location.href = `/assignments/${assignment.id}`;
             
         });
     }
@@ -37,7 +39,7 @@ const Dashboard = () => {
                     className="d-flex justify-content-end"
                     style={{ cursor: "pointer" }}
                     href="#" onClick={() =>{
-                    setJwt(null); 
+                    setuser.Jwt(null); 
                     navigate("/login");
                     }}>Logout
                     </div> */}
@@ -45,7 +47,7 @@ const Dashboard = () => {
                     className="d-flex justify-content-start"
                     style={{position: "fixed", top: "33px", right: "32px"}}
                     variant="dark"
-                    href="#" onClick={() => {setJwt(null);
+                    onClick={() => {user.setJwt(null);
                     navigate("/login");
                     }}>
                         Logout
@@ -90,7 +92,8 @@ const Dashboard = () => {
                       <Button 
                       variant="secondary"
                       onClick={() => {
-                        window.location.href = `/assignments/${assignment.id}`;
+                          navigate(`/assignments/${assignment.id}`);
+                        //window.location.href = `/assignments/${assignment.id}`;
                       }}>Edit
                       </Button>
                    </Card.Body>
