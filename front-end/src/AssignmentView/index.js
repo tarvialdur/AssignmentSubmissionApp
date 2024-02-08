@@ -37,6 +37,16 @@ const AssignmentView = () => {
         })
     }
 
+    useEffect(() => {
+        console.log(comment);
+    }, [comment]);
+
+    function updateComment(value){
+        const commentCopy = { ...comment };
+        commentCopy.text = value;
+        setComment(commentCopy);
+    }
+
         function updateAssignment(prop, value) {
         const newAssignment = { ...assignment };
         newAssignment[prop] = value;
