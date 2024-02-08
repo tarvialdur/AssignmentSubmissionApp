@@ -6,8 +6,6 @@ import StatusBadge from '../StatusBadge';
 import { useUser } from '../UserProvider';
 import Comment from '../Comment';
 
-
-
 const AssignmentView = () => {
     let navigate = useNavigate();
     const user = useUser();
@@ -36,7 +34,6 @@ const AssignmentView = () => {
 
     const prevAssignmentValue = useRef(assignment);
 
-
     function handleEditComment(commentId) {
         const i = comments.findIndex((comment) => comment.id === commentId);
         console.log("I've been told to edit this comment", comment[i]);
@@ -53,11 +50,6 @@ const AssignmentView = () => {
         // TODO: send DELETE request to server
         console.log("I've been told to delete this comment", comment)
     }
-
-
-
-
-
 
     function submitComment(){
         if(comment.id){
@@ -79,7 +71,7 @@ const AssignmentView = () => {
             
         })
     }
-    }
+}
 
     useEffect(() => {
         ajax(

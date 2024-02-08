@@ -14,7 +14,6 @@ const Comment = (props) => {
     return (
             <div className="comment-bubble">
                 <div className="d-flex gap-4" style={{ fontWeight: "bold" }}>
-                    
                     <div>{`${creator.name}`}</div>
                     {
                         decodedJwt.sub === creator.username ? (
