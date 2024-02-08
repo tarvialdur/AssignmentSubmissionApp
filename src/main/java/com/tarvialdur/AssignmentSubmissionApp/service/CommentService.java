@@ -25,12 +25,16 @@ public class CommentService {
         Comment comment = new Comment();
         Assignment assignment = assignmentRepository.getById(commentDto.getAssignmentId());
 
+        comment.setId(commentDto.getId());
         comment.setAssignment(assignment);
         comment.setText(commentDto.getText());
         comment.setCreator(user);
-        comment.setCreatedDate(LocalDateTime.now());
-        return commentRepository.save(comment);
 
+        if(comment.getId() == null) {
+            comment.setCreatedDate(LocalDateTime.now());
+        }
+
+        return commentRepository.save(comment);
     }
 
     //decided using set because of possible duplicates

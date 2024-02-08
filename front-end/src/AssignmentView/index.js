@@ -21,26 +21,64 @@ const AssignmentView = () => {
         status: null,
     });
 
+    
+    const emptyComment = {
+        id: null,
+        text: "",
+        assignmentId: assignmentId != null ? parseInt(assignmentId) : null,
+        user: user.jwt,
+    }
+    
+    const [assignmentEnums, setAssignmentEnums] = useState([]);
+    const [assignmentStatuses, setAssignmentStatuses] = useState([]);
+    const [comment, setComment] = useState(emptyComment);
     const [comments, setComments] = useState([]);
 
-    const[assignmentEnums, setAssignmentEnums] = useState([]);
-    const[assignmentStatuses, setAssignmentStatuses] = useState([]);
-    const[comment, setComment] = useState({
-        text: "",
-        assignment: assignmentId != null ? parseInt(assignmentId) : null,
-        user: user.jwt,
-
-    });
-
     const prevAssignmentValue = useRef(assignment);
-    
+
+
+    function handleEditComment(commentId) {
+        const i = comments.findIndex((comment) => comment.id === commentId);
+        console.log("I've been told to edit this comment", comment[i]);
+        const commentCopy = {
+            id: comments[i].id,
+            text: comments[i].text,
+            assignmentId: assignmentId != null ? parseInt(assignmentId) : null,
+            user: user.jwt,
+        }
+        setComment(commentCopy)
+    }
+
+    function handleDeleteComment (commentId){
+        // TODO: send DELETE request to server
+        console.log("I've been told to delete this comment", comment)
+    }
+
+
+
+
+
+
     function submitComment(){
-        ajax("/api/comments", "post", user.jwt, comment).then((commentData) => {
+        if(comment.id){
+        ajax(`/api/comments/${comment.id}`, "put", user.jwt, comment).then(dt => {
             const commentsCopy = [ ...comments ]
-            commentsCopy.push(commentData);
+            const i = commentsCopy.findIndex(comment => comment.id === dt.id);
+            commentsCopy[i] = dt;
 
             setComments(commentsCopy);
+            setComment(emptyComment);
         })
+        }else {
+        ajax("/api/comments", "post", user.jwt, comment).then((dt) => {
+            const commentsCopy = [ ...comments ]
+            commentsCopy.push(dt);
+
+            setComments(commentsCopy);
+            setComment(emptyComment);
+            
+        })
+    }
     }
 
     useEffect(() => {
@@ -54,11 +92,13 @@ const AssignmentView = () => {
         });
     }, []);
 
+
     function updateComment(value){
         const commentCopy = { ...comment };
         commentCopy.text = value;
         setComment(commentCopy);
     }
+
 
     function updateAssignment(prop, value) {
         const newAssignment = { ...assignment };
@@ -76,6 +116,7 @@ const AssignmentView = () => {
         }
     }
 
+
     function persist(){
         ajax(`/api/assignments/${assignmentId}`, "PUT", user.jwt, assignment).then(
             (assignmentData) => {
@@ -86,7 +127,6 @@ const AssignmentView = () => {
 
 
 useEffect(() => {
-
     if(prevAssignmentValue.current.status !== assignment.status){
         persist();
     }
@@ -109,10 +149,11 @@ useEffect(() => {
 }, []); 
 
     return (
+
         <Container className="mt-5">
         <Row className="d-flex align-items-center">
             <Col>
-            {assignment.number ? <h1>Assignment {assignment.number}</h1> : <></>}
+            {assignment.number ? <h1>Assignment{assignment.number}</h1> : <></>}
             </Col>
             <Col>
             <StatusBadge text={assignment.status} />
@@ -155,7 +196,7 @@ useEffect(() => {
             onChange={(e) => updateAssignment("githubUrl", e.target.value)}
             type="url"
             value={assignment.githubUrl}
-            placeholder="https://github.com/username/repo-name" 
+            placeholder="https://github.com/username/repo-name-needs-to-be-updated" 
             />
         </Col>
     </Form.Group>
@@ -230,22 +271,24 @@ useEffect(() => {
     <div className="mt-5">
         <textarea 
         style={{ width: "100%", borderRadius: "0.5em" }}
-        onChange={(e) => updateComment(e.target.value)}>
+        onChange={(e) => updateComment(e.target.value)}
+        value={comment.text}>
         </textarea>
         
         <Button 
         size="sm"
-        onClick={() => submitComment()}
-        >
-            Post Comment
-        </Button>
+        onClick={() => submitComment()}>Post Comment</Button>
     </div>
     <div className="mt-5">
         {comments.map(comment => (
         <Comment 
         createdDate={comment.createdDate}
         creator={comment.creator}
-        text={comment.text}/>
+        text={comment.text}
+        emitDeleteComment={handleDeleteComment}
+        emitEditComment={handleEditComment}
+        id={comment.id}
+        />
         ))}
     </div>
             </>
