@@ -7,10 +7,10 @@ import com.tarvialdur.AssignmentSubmissionApp.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Set;
 
 @RestController // return data, not views, so has to be restcontroller
 @RequestMapping("/api/comments") // all endpoints in this entire comments controller will be prefixed with /api/comments
@@ -25,5 +25,11 @@ public class CommentController {
         Comment comment = commentService.save(commentDto, user);
         System.out.println(commentDto);
         return ResponseEntity.ok(comment);
+    }
+
+    @GetMapping("")
+    public ResponseEntity<Set<Comment>> getComments(@RequestParam Long assignmentId) {
+        Set<Comment> comments =  commentService.getCommentsByAssignmentId(assignmentId);
+        return ResponseEntity.ok(comments);
     }
 }

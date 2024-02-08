@@ -10,15 +10,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class CommentService {
 
     @Autowired
     private CommentRepository commentRepository;
-
     @Autowired
     private AssignmentRepository assignmentRepository;
+
     public Comment save(CommentDto commentDto, User user) {
         Comment comment = new Comment();
         Assignment assignment = assignmentRepository.getById(commentDto.getAssignmentId());
@@ -29,5 +31,11 @@ public class CommentService {
         comment.setCreatedDate(LocalDateTime.now());
         return commentRepository.save(comment);
 
+    }
+
+    //decided using set because of possible duplicates
+    public Set<Comment> getCommentsByAssignmentId(Long assignmentId) {
+        Set<Comment> comments = commentRepository.findByAssignmentId(assignmentId);
+        return comments;
     }
 }

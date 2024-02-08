@@ -42,7 +42,6 @@ const CodeReviewerDashboard = () => {
         ajax("api/assignments", "GET", user.jwt).then(
             (assignmentsData) => {
                 setAssignments(assignmentsData);
-                console.log(assignmentsData);
             });
     }, [user.jwt]);
 

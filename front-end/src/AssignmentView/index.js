@@ -1,9 +1,10 @@
-import React, { useEffect, useState,useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import ajax from '../Services/fetchServices';
 import { Button, ButtonGroup, Col, Container, Dropdown, DropdownButton, Form, Row } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import StatusBadge from '../StatusBadge';
 import { useUser } from '../UserProvider';
+import Comment from '../Comment';
 
 
 
@@ -11,15 +12,16 @@ const AssignmentView = () => {
     let navigate = useNavigate();
     const user = useUser();
     const { assignmentId } = useParams();
-    console.log("assignmentId", assignmentId);
+    
     //const assignmentId = window.location.href.split("/assignments/")[1];
     const[assignment, setAssignment] = useState({
         branch: "",
         githubUrl: "",
         number: null,
         status: null,
-
     });
+
+    const [comments, setComments] = useState([]);
 
     const[assignmentEnums, setAssignmentEnums] = useState([]);
     const[assignmentStatuses, setAssignmentStatuses] = useState([]);
@@ -32,16 +34,25 @@ const AssignmentView = () => {
 
     const prevAssignmentValue = useRef(assignment);
     
-
     function submitComment(){
-        ajax("/api/comments/", "post", user.jwt, comment).then((comment) => {
-            console.log(comment);
+        ajax("/api/comments", "post", user.jwt, comment).then((commentData) => {
+            const commentsCopy = [ ...comments ]
+            commentsCopy.push(commentData);
+
+            setComments(commentsCopy);
         })
     }
 
     useEffect(() => {
-        console.log(comment);
-    }, [comment]);
+        ajax(
+            `/api/comments?assignmentId=${assignmentId}`, 
+            "get", 
+            user.jwt, 
+            null
+            ).then((commentData) => {
+            setComments(commentData);
+        });
+    }, []);
 
     function updateComment(value){
         const commentCopy = { ...comment };
@@ -75,12 +86,11 @@ const AssignmentView = () => {
 
 
 useEffect(() => {
-    console.log("Previous value of assgnment", prevAssignmentValue.current);
+
     if(prevAssignmentValue.current.status !== assignment.status){
         persist();
     }
     prevAssignmentValue.current = assignment;
-    console.log("New value of assignment", assignment);
 }, [assignment]);
 
 
@@ -128,7 +138,7 @@ useEffect(() => {
             }}
         >
             {assignmentEnums.map((assignmentEnum) => (
-            <Dropdown.Item eventKey={assignmentEnum.assignmentNumber}>
+            <Dropdown.Item key={assignmentEnum.assignmentNumber} eventKey={assignmentEnum.assignmentNumber}>
                 {assignmentEnum.assignmentNumber}
                 </Dropdown.Item> 
                 ))}
@@ -229,6 +239,14 @@ useEffect(() => {
         >
             Post Comment
         </Button>
+    </div>
+    <div className="mt-5">
+        {comments.map(comment => (
+        <Comment 
+        createdDate={comment.createdDate}
+        creator={comment.creator}
+        text={comment.text}/>
+        ))}
     </div>
             </>
             ) : ( 

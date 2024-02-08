@@ -28,6 +28,7 @@ public class User implements UserDetails {
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
 	@JsonIgnore
 	private List<Authority> authorities = new ArrayList<>();
+	private String name;
 
 
 	public Long getId() {
@@ -93,4 +94,10 @@ public class User implements UserDetails {
 		return true;
 	}
 
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 }

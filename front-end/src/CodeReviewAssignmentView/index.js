@@ -48,12 +48,12 @@ const CodeReviewAssignmentView = () => {
 }
 
 useEffect(() => {
-    console.log("Previous value of assgnment", prevAssignmentValue.current);
+    
     if(prevAssignmentValue.current.status !== assignment.status){
         persist();
     }
     prevAssignmentValue.current = assignment;
-    console.log("New value of assignment", assignment);
+    
 }, [assignment]);
 
 useEffect(() => {

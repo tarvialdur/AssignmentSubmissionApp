@@ -1,6 +1,7 @@
 package com.tarvialdur.AssignmentSubmissionApp.repository;
 
 import com.tarvialdur.AssignmentSubmissionApp.domain.Assignment;
+import com.tarvialdur.AssignmentSubmissionApp.domain.Comment;
 import com.tarvialdur.AssignmentSubmissionApp.domain.User;
 import com.tarvialdur.AssignmentSubmissionApp.enums.AssignmentStatusEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
