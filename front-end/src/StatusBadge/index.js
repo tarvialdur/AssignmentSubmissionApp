@@ -11,11 +11,12 @@ const StatusBadge = (props) => {
         else return "info";
     }
     return (
-        <Badge 
+        <Badge className=""
                 pill 
                 bg={getColorOfBadge()} 
                 style={{ 
                 fontSize: "1em", 
+                float: "right",
                 }}
                 >
                 {text}

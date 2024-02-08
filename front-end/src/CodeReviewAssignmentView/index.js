@@ -76,7 +76,9 @@ useEffect(() => {
             {assignment.number ? <h1>Assignment {assignment.number}</h1> : <></>} 
             </Col>
             <Col>
-            <StatusBadge text={assignment.status} />
+            <StatusBadge 
+            text={assignment.status} 
+            />
             </Col>
         </Row>
             {assignment ? (
@@ -171,6 +173,19 @@ useEffect(() => {
         Back
     </Button>
 
+    </div>
+    <div className="mt-5">
+        <textarea 
+        style={{ width: "100%", borderRadius: "0.5em" }}
+        >
+        
+        </textarea>
+        
+        <Button 
+        size="sm"
+        >
+            Post Comment
+        </Button>
     </div>
     
             </>

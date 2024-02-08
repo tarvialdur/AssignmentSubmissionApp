@@ -1,7 +1,7 @@
 import React, { useEffect, useState,useRef } from 'react';
 import ajax from '../Services/fetchServices';
 import { Button, ButtonGroup, Col, Container, Dropdown, DropdownButton, Form, Row } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import StatusBadge from '../StatusBadge';
 import { useUser } from '../UserProvider';
 
@@ -10,8 +10,10 @@ import { useUser } from '../UserProvider';
 const AssignmentView = () => {
     let navigate = useNavigate();
     const user = useUser();
-    const assignmentId = window.location.href.split("/assignments/")[1];
-    const [assignment, setAssignment] = useState({
+    const { assignmentId } = useParams();
+    console.log("assignmentId", assignmentId);
+    //const assignmentId = window.location.href.split("/assignments/")[1];
+    const[assignment, setAssignment] = useState({
         branch: "",
         githubUrl: "",
         number: null,
@@ -21,9 +23,9 @@ const AssignmentView = () => {
 
     const[assignmentEnums, setAssignmentEnums] = useState([]);
     const[assignmentStatuses, setAssignmentStatuses] = useState([]);
-    const [comment, setComment] = useState({
+    const[comment, setComment] = useState({
         text: "",
-        assignment: assignmentId,
+        assignment: assignmentId != null ? parseInt(assignmentId) : null,
         user: user.jwt,
 
     });
@@ -32,8 +34,8 @@ const AssignmentView = () => {
     
 
     function submitComment(){
-        ajax("/api/comments", "post", user.jwt, comment).then((data) => {
-            console.log(data);
+        ajax("/api/comments/", "post", user.jwt, comment).then((comment) => {
+            console.log(comment);
         })
     }
 
@@ -47,7 +49,7 @@ const AssignmentView = () => {
         setComment(commentCopy);
     }
 
-        function updateAssignment(prop, value) {
+    function updateAssignment(prop, value) {
         const newAssignment = { ...assignment };
         newAssignment[prop] = value;
         setAssignment(newAssignment);
@@ -162,7 +164,7 @@ useEffect(() => {
         </Col>
     </Form.Group>
 
-    {assignment.status === "Completed" ? ( 
+    {assignment.status === "Completed" || assignment.status === "Needs Update" || assignment.status === "Resubmitted" ? ( 
         <>
         <div>
         <Form.Group as={Row} className="d-flex align-items-center mb-3" controlId="codeReviewVideoUrl">
@@ -216,10 +218,15 @@ useEffect(() => {
     )}
 
     <div className="mt-5">
-        <textarea style={{ width: "100%",borderRadius: "0.5em" }}></textarea>
-        <Button 
-        onClick={() => submitComment({})}
+        <textarea 
+        style={{ width: "100%", borderRadius: "0.5em" }}
         onChange={(e) => updateComment(e.target.value)}>
+        </textarea>
+        
+        <Button 
+        size="sm"
+        onClick={() => submitComment()}
+        >
             Post Comment
         </Button>
     </div>

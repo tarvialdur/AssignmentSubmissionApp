@@ -1,10 +1,21 @@
 package com.tarvialdur.AssignmentSubmissionApp.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.jsonschema.JsonSerializableSchema;
+import com.fasterxml.jackson.databind.ser.ContainerSerializer;
+import com.fasterxml.jackson.databind.ser.std.SerializableSerializer;
+import org.hibernate.annotations.Fetch;
+import org.springframework.data.repository.cdi.Eager;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table(name="comments")
+
 public class Comment {
 
     @Id
@@ -16,6 +27,8 @@ public class Comment {
     private User creator;
     @Column(columnDefinition = "TEXT")
     private String text;
+
+    @JsonIgnore
     @ManyToOne
     private Assignment assignment;
 
