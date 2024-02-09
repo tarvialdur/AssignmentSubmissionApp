@@ -5,6 +5,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import StatusBadge from '../StatusBadge';
 import { useUser } from '../UserProvider';
 import Comment from '../Comment';
+import { useInterval } from '../util/useInterval';
+import dayjs from 'dayjs';
 
 const AssignmentView = () => {
     let navigate = useNavigate();
@@ -18,37 +20,57 @@ const AssignmentView = () => {
         number: null,
         status: null,
     });
-
-    
     const emptyComment = {
         id: null,
         text: "",
         assignmentId: assignmentId != null ? parseInt(assignmentId) : null,
         user: user.jwt,
     }
-    
+
     const [assignmentEnums, setAssignmentEnums] = useState([]);
     const [assignmentStatuses, setAssignmentStatuses] = useState([]);
     const [comment, setComment] = useState(emptyComment);
     const [comments, setComments] = useState([]);
-
+    const [refreshInterval, setRefreshInterval] = useState(null);
     const prevAssignmentValue = useRef(assignment);
+
+
+// https://sebhastian.com/setinterval-react/?utm_content=cmp-true
+    
+       
+        useInterval(() => {
+           updateCommentTimeDisplay();
+        }, 1000 * 5);
+        function updateCommentTimeDisplay() {
+            console.log("Comments in update", comments);
+            const commentsCopy = [...comments];
+            commentsCopy.forEach(comment => comment.createdDate = dayjs(comment.createdDate));
+            console.log("Copy of comments is: ", commentsCopy);
+            setComments(commentsCopy);
+        }
+        
+
 
     function handleEditComment(commentId) {
         const i = comments.findIndex((comment) => comment.id === commentId);
-        console.log("I've been told to edit this comment", comment[i]);
         const commentCopy = {
             id: comments[i].id,
             text: comments[i].text,
             assignmentId: assignmentId != null ? parseInt(assignmentId) : null,
             user: user.jwt,
-        }
+        };
         setComment(commentCopy)
     }
 
     function handleDeleteComment (commentId){
         // TODO: send DELETE request to server
-        console.log("I've been told to delete this comment", comment)
+        ajax(`/api/comments/${commentId}`, "delete", user.jwt).then((msg) => {
+            const commentsCopy = [ ...comments ];
+            const i = commentsCopy.findIndex((comment) => comment.id === comment.id);
+            commentsCopy.splice(i, 1);
+            console.log("1. Deleting comments", commentsCopy);
+            setComments(commentsCopy);
+        });
     }
 
     function submitComment(){
@@ -274,12 +296,10 @@ useEffect(() => {
     <div className="mt-5">
         {comments.map(comment => (
         <Comment 
-        createdDate={comment.createdDate}
-        creator={comment.creator}
-        text={comment.text}
+        key={comment.id}
+        commentData={comment}
         emitDeleteComment={handleDeleteComment}
         emitEditComment={handleEditComment}
-        id={comment.id}
         />
         ))}
     </div>

@@ -4,41 +4,28 @@ import { jwtDecode as jwt_decode } from "jwt-decode";
 import dayjs from 'dayjs';
 import relativeTime from "dayjs/plugin/relativeTime";
 
-const Comment = (props) => {
 
+const Comment = (props) => {
     const user = useUser();
-    const decodedJwt = jwt_decode(user.jwt)
-     
-    const { 
-        createdDate, 
-        id, 
-        creator, 
-        emitEditComment, 
-        text, 
-        emitDeleteComment 
-    } = props; 
-    
+    const decodedJwt = jwt_decode(user.jwt);
+    const {id, createdDate, creator, text} = props.commentData;
+    const { emitEditComment, emitDeleteComment } = props; 
     const [commentTime, setCommentTime ] = useState(""); 
 
     useEffect(() => {
+        console.log("Updating comment relative time");
         updateCommentTime();
-    }, (createdDate));
+    }, [createdDate]);
+
 
     function updateCommentTime(){
         if(createdDate){
             dayjs.extend(relativeTime);
             setCommentTime(dayjs(createdDate).fromNow());
+            
             }
     }
-
-    setInterval(() => {
-        updateCommentTime();
-    }, 1000*61)
    
-    console.log("decodedJWT", decodedJwt);
-    console.log("creator", creator);
-
-
     return (
     <>
         <div className="comment-bubble">
@@ -55,7 +42,7 @@ const Comment = (props) => {
                     </div>
                     <div 
                         onClick={() => {emitDeleteComment(id)}} 
-                        style={{ cursor: "pointer", color:"darkblue"}}
+                        style={{ cursor: "pointer", color: "darkkhaki" }}
                         >
                         delete
                     </div>  
