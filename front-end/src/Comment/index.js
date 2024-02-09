@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useUser } from '../UserProvider';
 import { jwtDecode as jwt_decode } from "jwt-decode"; 
 import dayjs from 'dayjs';
@@ -18,9 +18,22 @@ const Comment = (props) => {
         emitDeleteComment 
     } = props; 
     
+    const [commentTime, setCommentTime ] = useState(""); 
 
-    dayjs.extend(relativeTime);
-    const commentTime = dayjs(createdDate).fromNow();
+    useEffect(() => {
+        updateCommentTime();
+    }, (createdDate));
+
+    function updateCommentTime(){
+        if(createdDate){
+            dayjs.extend(relativeTime);
+            setCommentTime(dayjs(createdDate).fromNow());
+            }
+    }
+
+    setInterval(() => {
+        updateCommentTime();
+    }, 1000*61)
    
     console.log("decodedJWT", decodedJwt);
     console.log("creator", creator);
@@ -44,7 +57,7 @@ const Comment = (props) => {
                         onClick={() => {emitDeleteComment(id)}} 
                         style={{ cursor: "pointer", color:"darkblue"}}
                         >
-                            delete
+                        delete
                     </div>  
                     </> 
                     ) : (
@@ -55,10 +68,9 @@ const Comment = (props) => {
             </div>
             
             <div style={{ marginTop: "-1em", marginLeft: "1.4em", fontSize:"15px"}}>
-            Posted: {commentTime}   
+            {commentTime ? `Posted ${commentTime}` : ""}
             </div>
-            </>
-            
+            </> 
     );
 };
 
