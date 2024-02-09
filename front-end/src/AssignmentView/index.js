@@ -66,7 +66,7 @@ const AssignmentView = () => {
         // TODO: send DELETE request to server
         ajax(`/api/comments/${commentId}`, "delete", user.jwt).then((msg) => {
             const commentsCopy = [ ...comments ];
-            const i = commentsCopy.findIndex((comment) => comment.id === comment.id);
+            const i = commentsCopy.findIndex((comment) => commentId === comment.id);
             commentsCopy.splice(i, 1);
             console.log("1. Deleting comments", commentsCopy);
             setComments(commentsCopy);

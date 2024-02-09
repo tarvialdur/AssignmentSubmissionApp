@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -24,7 +24,6 @@ public class CommentService {
     public Comment save(CommentDto commentDto, User user) {
         Comment comment = new Comment();
         Assignment assignment = assignmentRepository.getById(commentDto.getAssignmentId());
-
         comment.setId(commentDto.getId());
         comment.setAssignment(assignment);
         comment.setText(commentDto.getText());
@@ -33,7 +32,6 @@ public class CommentService {
         if(comment.getId() == null) {
             comment.setCreatedDate(LocalDateTime.now());
         }
-
         return commentRepository.save(comment);
     }
 
@@ -42,4 +40,11 @@ public class CommentService {
         Set<Comment> comments = commentRepository.findByAssignmentId(assignmentId);
         return comments;
     }
+
+    public void delete(Long commentId){
+        commentRepository.findById(commentId);
+        commentRepository.deleteById(commentId);
+    }
+
+
 }

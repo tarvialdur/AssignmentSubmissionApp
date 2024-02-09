@@ -31,13 +31,17 @@ public class CommentController {
     public ResponseEntity<Comment> updateComment(@RequestBody CommentDto commentDto, @AuthenticationPrincipal User user){
         Comment comment = commentService.save(commentDto, user);
         return ResponseEntity.ok(comment);
-
     }
-
 
     @GetMapping("")
     public ResponseEntity<Set<Comment>> getComments(@RequestParam Long assignmentId) {
         Set<Comment> comments =  commentService.getCommentsByAssignmentId(assignmentId);
         return ResponseEntity.ok(comments);
+    }
+
+    @DeleteMapping("{commentId}")
+    public ResponseEntity<Comment> deleteComment(@PathVariable  Long commentId) {
+       commentService.delete(commentId);
+        return ResponseEntity.noContent().build();
     }
 }
