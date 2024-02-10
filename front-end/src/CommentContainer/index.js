@@ -16,19 +16,22 @@ const CommentContainer = (props) => {
         assignmentId: assignmentId != null ? parseInt(assignmentId) : null,
         user: user.jwt,
         createdDate: null,
-    }
+    };
     const [comment, setComment] = useState(emptyComment);
     const [comments, setComments] = useState([]);
     
+
+
     useInterval(() => {
         updateCommentTimeDisplay();
-     }, 1000 * 5);
+     }, 1000);
      function updateCommentTimeDisplay() {
          const commentsCopy = [...comments];
          commentsCopy.forEach(comment => comment.createdDate = dayjs(comment.createdDate));
-         setComments(commentsCopy);
+         formatComments(commentsCopy);
      }
      
+
 
 
  function handleEditComment(commentId) {
@@ -44,15 +47,33 @@ const CommentContainer = (props) => {
      setComment(commentCopy)
  }
 
+
+ useEffect(() => {
+    console.log(comment);
+ }, [comment])
+
+
  function handleDeleteComment (commentId){
      // TODO: send DELETE request to server
      ajax(`/api/comments/${commentId}`, "delete", user.jwt).then((msg) => {
          const commentsCopy = [ ...comments ];
          const i = commentsCopy.findIndex((comment) => comment.id === commentId);
          commentsCopy.splice(i, 1);
-         setComments(commentsCopy);
+         formatComments(commentsCopy);
      });
  }
+
+ function formatComments(commentsCopy){
+    commentsCopy.forEach(comment => {
+        if(typeof comment.createdDate === "string") {
+            console.log("BEFORE Converting string date to dayjs date", comment.createdDate);
+            comment.createdDate = dayjs(comment.createdDate);
+            console.log("AFTER converting string date to dayjs date", comment.createdDate);
+        }
+    })
+    setComments(commentsCopy);
+ }
+
 
     useEffect(() => {
         ajax(
@@ -61,7 +82,7 @@ const CommentContainer = (props) => {
             user.jwt, 
             null
             ).then((commentData) => {
-            setComments(commentData);
+            formatComments(commentData);
         });
     }, []);
 
@@ -71,13 +92,19 @@ const CommentContainer = (props) => {
         setComment(commentCopy);
     }
 
+    
+
     function submitComment(){
+        // if(typeof comment.createdDate === "object" && comment.createdDate != null){
+        //     comment.createdDate =comment.createdDate.toDate();
+        // }
         if(comment.id){
         ajax(`/api/comments/${comment.id}`, "put", user.jwt, comment).then(dt => {
             const commentsCopy = [ ...comments ]
             const i = commentsCopy.findIndex(comment => comment.id === dt.id);
             commentsCopy[i] = dt;
-            setComments(commentsCopy);
+            formatComments(commentsCopy);
+            
             setComment(emptyComment);
         })
         }else {
@@ -85,7 +112,7 @@ const CommentContainer = (props) => {
             const commentsCopy = [ ...comments ]
             commentsCopy.push(dt);
             console.log("Creating a comment:", dt);
-            setComments(commentsCopy);
+            formatComments(commentsCopy);
             setComment(emptyComment);
             
         })

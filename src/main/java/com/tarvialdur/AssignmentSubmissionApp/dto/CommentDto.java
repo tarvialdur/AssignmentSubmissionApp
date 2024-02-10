@@ -1,11 +1,15 @@
 package com.tarvialdur.AssignmentSubmissionApp.dto;
 
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+
 public class CommentDto {
 
     private Long id;
     private Long assignmentId;
     private String text;
     private String user;
+    private ZonedDateTime createdDate;
 
     public Long getAssignmentId() {
         return assignmentId;
@@ -43,12 +47,22 @@ public class CommentDto {
         this.assignmentId = assignmentId;
     }
 
+    public ZonedDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(ZonedDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
     @Override
     public String toString() {
         return "CommentDto{" +
-                "assignmentId=" + assignmentId +
+                "id=" + id +
+                ", assignmentId=" + assignmentId +
                 ", text='" + text + '\'' +
                 ", user='" + user + '\'' +
+                ", createdDate=" + createdDate +
                 '}';
     }
 }

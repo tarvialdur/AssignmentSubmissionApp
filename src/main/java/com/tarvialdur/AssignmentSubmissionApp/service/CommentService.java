@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.Set;
 
@@ -24,13 +25,17 @@ public class CommentService {
     public Comment save(CommentDto commentDto, User user) {
         Comment comment = new Comment();
         Assignment assignment = assignmentRepository.getById(commentDto.getAssignmentId());
+
         comment.setId(commentDto.getId());
         comment.setAssignment(assignment);
         comment.setText(commentDto.getText());
         comment.setCreator(user);
+        comment.setCreatedDate(commentDto.getCreatedDate());
 
-        if(comment.getId() == null) {
-            comment.setCreatedDate(LocalDateTime.now());
+        if (comment.getId() == null) {
+            comment.setCreatedDate(ZonedDateTime.now());
+        } else {
+            comment.setCreatedDate(commentDto.getCreatedDate());
         }
         return commentRepository.save(comment);
     }
