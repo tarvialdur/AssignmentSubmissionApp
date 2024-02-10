@@ -5,6 +5,7 @@ import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import Dashboard from '../Dashboard';
 import StatusBadge from '../StatusBadge';
 import { useNavigate } from 'react-router-dom';
+import CommentContainer from '../CommentContainer';
 
 
 const CodeReviewAssignmentView = () => {
@@ -174,20 +175,8 @@ useEffect(() => {
     </Button>
 
     </div>
-    <div className="mt-5">
-        <textarea 
-        style={{ width: "100%", borderRadius: "0.5em" }}
-        >
-        
-        </textarea>
-        
-        <Button 
-        size="sm"
-        >
-            Post Comment
-        </Button>
-    </div>
     
+    <CommentContainer assignmentId = {assignmentId} />
             </>
             ) : ( 
             <></>

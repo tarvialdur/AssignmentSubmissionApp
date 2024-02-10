@@ -13,7 +13,6 @@ const Comment = (props) => {
     const [commentTime, setCommentTime ] = useState(""); 
 
     useEffect(() => {
-        console.log("Updating comment relative time");
         updateCommentTime();
     }, [createdDate]);
 
@@ -21,6 +20,8 @@ const Comment = (props) => {
     function updateCommentTime(){
         if(createdDate){
             dayjs.extend(relativeTime);
+            console.log("CreatedDate is:", createdDate);
+            console.log("Date Converted to dayjs obj", dayjs(createdDate));
             setCommentTime(dayjs(createdDate).fromNow());
             
             }

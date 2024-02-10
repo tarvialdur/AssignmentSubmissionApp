@@ -42,9 +42,8 @@ public class CommentService {
     }
 
     public void delete(Long commentId){
-        commentRepository.findById(commentId);
+
         commentRepository.deleteById(commentId);
     }
-
 
 }
