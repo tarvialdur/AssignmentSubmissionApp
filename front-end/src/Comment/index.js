@@ -48,7 +48,7 @@ const Comment = (props) => {
                     </div>
                     <div 
                         onClick={() => {emitDeleteComment(id)}} 
-                        style={{ cursor: "pointer", color: "darkkhaki" }}
+                        style={{ cursor: "pointer", color: "red" }}
                         >
                         delete
                     </div>  

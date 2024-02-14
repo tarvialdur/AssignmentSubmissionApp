@@ -32,16 +32,6 @@ const AssignmentView = () => {
 
 // https://sebhastian.com/setinterval-react/?utm_content=cmp-true
     
-       
-        
-
-
-
-    
-
-
-    
-
 
     function updateAssignment(prop, value) {
         const newAssignment = { ...assignment };
@@ -96,7 +86,7 @@ useEffect(() => {
         <Container className="mt-5">
         <Row className="d-flex align-items-center">
             <Col>
-            {assignment.number ? <h1>Assignment{assignment.number}</h1> : <></>}
+            {assignment.number ? <h1>Assignment {assignment.number}</h1> : <></>}
             </Col>
             <Col>
             <StatusBadge text={assignment.status} />
@@ -168,7 +158,7 @@ useEffect(() => {
         <Col sm="9" md="8" lg="6">
           <a 
           href={assignment.codeReviewVideoUrl} 
-          style={{ fontWeight: "bold" }}
+          style={{ fontWeight: "bold" }} 
           >
             {assignment.codeReviewVideoUrl}
             </a>

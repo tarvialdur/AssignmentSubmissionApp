@@ -17,7 +17,8 @@ public enum AssignmentEnum {
     ASSIGNMENT_11(11, "Assignment Text 11"),
     ASSIGNMENT_12(12, "Assignment Text 12"),
     ASSIGNMENT_13(13, "Assignment Text 13"),
-    ASSIGNMENT_14(14, "Assignment Text 14");
+    ASSIGNMENT_14(14, "Assignment Text 14"),
+    ASSIGNMENT_15(15, "Assingment Text 15");
 
     private final int assignmentNumber;
     private final String assignmentName;

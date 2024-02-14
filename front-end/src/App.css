@@ -1,5 +1,5 @@
 .assignment-wrapper{
-    border: 1px dashed lightgray;
+    border: 1px dashed rgb(0, 0, 0);
     padding: 2em;
     border-radius: 1em;
     margin-top: 2em;
@@ -7,14 +7,15 @@
 
 .assignment-wrapper-title{
     width: min-content !important;
-    margin-top: -2em !important;
+    margin-top:0em !important;
     margin-bottom: 1em !important;
-    background-color: white !important;
+    background-color: transparent !important;
     white-space: nowrap !important;
+
 }
 
 .comment-bubble {
-    background: #cbe9cc;
+    background: #f1f1f1;
     border-radius: 1em;
     padding: 1em;
     margin: 1em 0em;
