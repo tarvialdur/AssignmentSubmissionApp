@@ -46,6 +46,7 @@ const Login = () => {
     return (
 
       <>
+      <div class="loginContainer">
       <Container className="mt-5" border="5px" >
         <Row className="justify-content-center">
           <Col md="8" lg="4">
@@ -57,7 +58,7 @@ const Login = () => {
               <Form.Control
               type="email" 
               size="lg"
-              placeholder=""
+              placeholder="tarvi / coderev / coderev2"
               value={username} 
               onChange={(e) => setUsername(e.target.value)}
               />
@@ -73,7 +74,7 @@ const Login = () => {
             <Form.Control 
             type="password"
             size="lg"
-            placeholder=""
+            placeholder="salakala"
             value={password} 
             onChange={(e) => setPassword(e.target.value)}
             />
@@ -105,6 +106,7 @@ const Login = () => {
           </Col>
         </Row>
       </Container>
+      </div>
         </>
     );
 };

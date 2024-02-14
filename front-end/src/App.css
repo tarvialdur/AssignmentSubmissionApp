@@ -19,3 +19,29 @@
     padding: 1em;
     margin: 1em 0em;
 }
+.homepage{
+    margin-top: 300px;
+}
+
+.homepage h1{
+    display: flex;
+    justify-content: center;
+}
+
+.homepage h4{
+    display: flex;
+    justify-content: center;
+}
+
+body{
+    background-image: url('./Images/baege.jpg');
+}
+
+.buttonDiv{
+    display: flex;
+    justify-content: center;
+}
+
+.loginContainer{
+    margin-top: 200px;
+}
